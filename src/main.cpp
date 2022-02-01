@@ -44,6 +44,42 @@ void setup()
   delay(10000);
 }
 
+void driveRight()
+{
+  analogWrite(leftMotorVelocity, 120);
+  analogWrite(rightMotorVelocity, 120);
+
+  analogWrite(leftControl1, 255);
+  analogWrite(leftControl2, 0);
+  analogWrite(rightControl1, 255);
+  analogWrite(rightControl2, 0);
+  delay(700);
+}
+
+void driveLeft()
+{
+  analogWrite(leftMotorVelocity, 120);
+  analogWrite(rightMotorVelocity, 120);
+
+  analogWrite(leftControl1, 0);
+  analogWrite(leftControl2, 255);
+  analogWrite(rightControl1, 0);
+  analogWrite(rightControl2, 255);
+  delay(700);
+}
+
+void reverse()
+{
+  analogWrite(leftMotorVelocity, 120);
+  analogWrite(rightMotorVelocity, 120);
+
+  analogWrite(leftControl1, 255);
+  analogWrite(leftControl2, 0);
+  analogWrite(rightControl1, 255);
+  analogWrite(rightControl2, 0);
+  delay(1200);
+}
+
 void loop() 
 {
   long timeFront, timeLeft, timeRight, right, left, front;
@@ -61,7 +97,7 @@ void loop()
   digitalWrite(trigLeft, HIGH);
   delayMicroseconds(5);
   digitalWrite(trigLeft, LOW);
-  timeFront = pulseIn(echoLeft, HIGH);
+  timeLeft = pulseIn(echoLeft, HIGH);
   left = timeLeft/29/2;
 
   digitalWrite(trigRight, LOW);
@@ -69,7 +105,7 @@ void loop()
   digitalWrite(trigRight, HIGH);
   delayMicroseconds(5);
   digitalWrite(trigRight, LOW);
-  timeFront = pulseIn(echoRight, HIGH);
+  timeRight = pulseIn(echoRight, HIGH);
   right = timeRight/29/2;
 
   analogWrite(leftMotorVelocity, 0);
@@ -126,38 +162,3 @@ void loop()
   
 }
 
-void driveRight()
-{
-  analogWrite(leftMotorVelocity, 120);
-  analogWrite(rightMotorVelocity, 120);
-
-  analogWrite(leftControl1, 255);
-  analogWrite(leftControl2, 0);
-  analogWrite(rightControl1, 255);
-  analogWrite(rightControl2, 0);
-  delay(700);
-}
-
-void driveLeft()
-{
-  analogWrite(leftMotorVelocity, 120);
-  analogWrite(rightMotorVelocity, 120);
-
-  analogWrite(leftControl1, 0);
-  analogWrite(leftControl2, 255);
-  analogWrite(rightControl1, 0);
-  analogWrite(rightControl2, 255);
-  delay(700);
-}
-
-void reverse()
-{
-  analogWrite(leftMotorVelocity, 120);
-  analogWrite(rightMotorVelocity, 120);
-
-  analogWrite(leftControl1, 255);
-  analogWrite(leftControl2, 0);
-  analogWrite(rightControl1, 255);
-  analogWrite(rightControl2, 0);
-  delay(1200);
-}
