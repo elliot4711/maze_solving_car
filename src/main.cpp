@@ -22,8 +22,11 @@ const int echoLeft = A5;
 
 
 
+
 void setup() 
 {
+  Serial.begin(9600);
+
   pinMode(trigFront, OUTPUT);
   pinMode(echoFront, INPUT);
 
@@ -91,6 +94,8 @@ void loop()
   digitalWrite(trigFront, LOW);
   timeFront = pulseIn(echoFront, HIGH);
   front = timeFront/29/2;
+
+  Serial.println(front);
 
   digitalWrite(trigLeft, LOW);
   delayMicroseconds(2);
