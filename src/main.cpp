@@ -1,10 +1,10 @@
 #include <Arduino.h>
 
 //Motor control pins
-const int leftMotorVelocity = 8;
+const int leftMotorVelocity = 10;
 const int rightMotorVelocity = 9;
 
-const int leftControl1 = 10;
+const int leftControl1 = 8;
 const int leftControl2 = 11;
 
 const int rightControl1 = 12;
@@ -25,7 +25,7 @@ const int echoLeft = A5;
 
 void setup() 
 {
-  Serial.begin(9600);
+  Serial.begin(9600); //Initialises serial connection 
 
   pinMode(trigFront, OUTPUT);
   pinMode(echoFront, INPUT);
@@ -95,7 +95,6 @@ void loop()
   timeFront = pulseIn(echoFront, HIGH);
   front = timeFront/29/2;
 
-  Serial.println(front);
 
   digitalWrite(trigLeft, LOW);
   delayMicroseconds(2);
