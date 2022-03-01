@@ -44,37 +44,37 @@ void setup()
   pinMode(rightControl1, OUTPUT);
   pinMode(rightControl2, OUTPUT);
   
-  delay(10000);
+  delay(3000);
 }
 
 void driveRight()
 {
-  analogWrite(leftMotorVelocity, 120);
-  analogWrite(rightMotorVelocity, 120);
+  analogWrite(leftMotorVelocity, 150);
+  analogWrite(rightMotorVelocity, 150);
 
   analogWrite(leftControl1, 255);
   analogWrite(leftControl2, 0);
-  analogWrite(rightControl1, 255);
-  analogWrite(rightControl2, 0);
-  delay(700);
-}
-
-void driveLeft()
-{
-  analogWrite(leftMotorVelocity, 120);
-  analogWrite(rightMotorVelocity, 120);
-
-  analogWrite(leftControl1, 0);
-  analogWrite(leftControl2, 255);
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 255);
   delay(700);
 }
 
+void driveLeft()
+{
+  analogWrite(leftMotorVelocity, 150);
+  analogWrite(rightMotorVelocity, 150);
+
+  analogWrite(leftControl1, 0);
+  analogWrite(leftControl2, 255);
+  analogWrite(rightControl1, 255);
+  analogWrite(rightControl2, 0);
+  delay(700);
+}
+
 void reverse()
 {
-  analogWrite(leftMotorVelocity, 120);
-  analogWrite(rightMotorVelocity, 120);
+  analogWrite(leftMotorVelocity, 150);
+  analogWrite(rightMotorVelocity, 150);
 
   analogWrite(leftControl1, 255);
   analogWrite(leftControl2, 0);
@@ -94,7 +94,9 @@ void loop()
   digitalWrite(trigFront, LOW);
   timeFront = pulseIn(echoFront, HIGH);
   front = timeFront/29/2;
-
+  //Serial.println("Front");
+  //Serial.println(front);
+  //delay(500);
 
   digitalWrite(trigLeft, LOW);
   delayMicroseconds(2);
@@ -103,6 +105,9 @@ void loop()
   digitalWrite(trigLeft, LOW);
   timeLeft = pulseIn(echoLeft, HIGH);
   left = timeLeft/29/2;
+  //Serial.println("Left");
+  //Serial.println(left);
+  //delay(500);
 
   digitalWrite(trigRight, LOW);
   delayMicroseconds(2);
@@ -111,12 +116,15 @@ void loop()
   digitalWrite(trigRight, LOW);
   timeRight = pulseIn(echoRight, HIGH);
   right = timeRight/29/2;
+  //Serial.println("Right");
+  //Serial.println(right);
+  //delay(500);
 
   analogWrite(leftMotorVelocity, 0);
   analogWrite(rightMotorVelocity, 0);
 
-  analogWrite(leftControl1, 255);
-  analogWrite(leftControl2, 0);
+  analogWrite(leftControl1, 0);
+  analogWrite(leftControl2, 255);
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 255);
 
@@ -124,11 +132,11 @@ void loop()
   {
     if (right > 7 && right < 13)
     {
-      analogWrite(leftMotorVelocity, 120);
-      analogWrite(rightMotorVelocity, 150);
+      analogWrite(leftMotorVelocity, 255);
+      analogWrite(rightMotorVelocity, 255);
 
-      analogWrite(leftControl1, 255);
-      analogWrite(leftControl2, 0);
+      analogWrite(leftControl1, 0);
+      analogWrite(leftControl2, 255);
       analogWrite(rightControl1, 0);
       analogWrite(rightControl2, 255);
     }
@@ -136,21 +144,21 @@ void loop()
     if (right >= 13)
     {
       analogWrite(leftMotorVelocity, 255);
-      analogWrite(rightMotorVelocity, 60);
+      analogWrite(rightMotorVelocity, 150);
 
-      analogWrite(leftControl1, 255);
-      analogWrite(leftControl2, 0);
+      analogWrite(leftControl1, 0);
+      analogWrite(leftControl2, 255);
       analogWrite(rightControl1, 0);
       analogWrite(rightControl2, 255);
     }
 
     if (right <= 7)
     {
-      analogWrite(leftMotorVelocity, 60);
+      analogWrite(leftMotorVelocity, 150);
       analogWrite(rightMotorVelocity, 255);
 
-      analogWrite(leftControl1, 255);
-      analogWrite(leftControl2, 0);
+      analogWrite(leftControl1, 0);
+      analogWrite(leftControl2, 255);
       analogWrite(rightControl1, 0);
       analogWrite(rightControl2, 255);
     }
