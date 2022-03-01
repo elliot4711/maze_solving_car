@@ -4,11 +4,11 @@
 const int leftMotorVelocity = 10;
 const int rightMotorVelocity = 9;
 
-const int leftControl1 = 8;
-const int leftControl2 = 11;
+const int leftControl1 = 7;
+const int leftControl2 = 6;
 
-const int rightControl1 = 12;
-const int rightControl2 = 13;
+const int rightControl1 = 5;
+const int rightControl2 = 4;
 
 //Ultrasonic sensor pins
 const int trigFront = A0;
