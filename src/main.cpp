@@ -49,44 +49,44 @@ void setup()
 
 void driveRight()
 {
-  analogWrite(leftMotorVelocity, 150);
-  analogWrite(rightMotorVelocity, 150);
-
-  analogWrite(leftControl1, 255);
-  analogWrite(leftControl2, 0);
-  analogWrite(rightControl1, 0);
-  analogWrite(rightControl2, 255);
-  delay(700);
-}
-
-void driveLeft()
-{
-  analogWrite(leftMotorVelocity, 150);
-  analogWrite(rightMotorVelocity, 150);
+  analogWrite(leftMotorVelocity, 255);
+  analogWrite(rightMotorVelocity, 255);
 
   analogWrite(leftControl1, 0);
   analogWrite(leftControl2, 255);
   analogWrite(rightControl1, 255);
   analogWrite(rightControl2, 0);
-  delay(700);
+  delay(250);
+}
+
+void driveLeft()
+{
+  analogWrite(leftMotorVelocity, 255);
+  analogWrite(rightMotorVelocity, 255);
+
+  analogWrite(leftControl1, 255);
+  analogWrite(leftControl2, 0);
+  analogWrite(rightControl1, 0);
+  analogWrite(rightControl2, 255);
+  delay(250);
 }
 
 void reverse()
 {
-  analogWrite(leftMotorVelocity, 150);
-  analogWrite(rightMotorVelocity, 150);
+  analogWrite(leftMotorVelocity, 255);
+  analogWrite(rightMotorVelocity, 255);
 
   analogWrite(leftControl1, 255);
   analogWrite(leftControl2, 0);
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 0);
-  delay(1200);
+  delay(500);
 
   analogWrite(leftControl1, 0);
   analogWrite(leftControl2, 255);
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 255);
-  delay(500);
+  delay(250);
 }
 
 void loop() 
@@ -134,9 +134,9 @@ void loop()
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 255);
 
-  if (front > 8)
+  if (front > 11)
   {
-    if (right > 7 && right < 13)
+    if (right > 8 && right < 12)
     {
       analogWrite(leftMotorVelocity, 255);
       analogWrite(rightMotorVelocity, 255);
@@ -147,10 +147,10 @@ void loop()
       analogWrite(rightControl2, 255);
     }
     
-    if (right >= 13)
+    if (right >= 12)
     {
       analogWrite(leftMotorVelocity, 255);
-      analogWrite(rightMotorVelocity, 190);
+      analogWrite(rightMotorVelocity, 100);
 
       analogWrite(leftControl1, 0);
       analogWrite(leftControl2, 255);
@@ -158,9 +158,9 @@ void loop()
       analogWrite(rightControl2, 255);
     }
 
-    if (right <= 7)
+    if (right <= 8)
     {
-      analogWrite(leftMotorVelocity, 190);
+      analogWrite(leftMotorVelocity, 100);
       analogWrite(rightMotorVelocity, 255);
 
       analogWrite(leftControl1, 0);
@@ -170,13 +170,13 @@ void loop()
     }
   }
 
-  if (left <= 20 && right > 20 && front <= 8) driveRight();
+  if (left <= 15 && right > 15 && front <= 8) driveRight();
 
-  if (left > 20 && right > 20 && front <= 8) driveRight();
+  if (left > 15 && right > 15 && front <= 8) driveRight();
 
-  if (right <= 20 && left > 20 && front <= 8) driveLeft();
+  if (right <= 15 && left > 15 && front <= 8) driveLeft();
   
-  if (right <= 20 && left <= 20 && front <= 8) reverse();
+  if (right <= 15 && left <= 15 && front <= 8) reverse();
   
 }
 
