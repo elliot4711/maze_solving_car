@@ -78,9 +78,15 @@ void reverse()
 
   analogWrite(leftControl1, 255);
   analogWrite(leftControl2, 0);
-  analogWrite(rightControl1, 255);
+  analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 0);
   delay(1200);
+
+
+  analogWrite(leftControl1, 0);
+  analogWrite(leftControl2, 255);
+  analogWrite(rightControl1, 0);
+  analogWrite(rightControl2, 255);
 }
 
 void loop() 
@@ -144,7 +150,7 @@ void loop()
     if (right >= 13)
     {
       analogWrite(leftMotorVelocity, 255);
-      analogWrite(rightMotorVelocity, 150);
+      analogWrite(rightMotorVelocity, 190);
 
       analogWrite(leftControl1, 0);
       analogWrite(leftControl2, 255);
@@ -154,7 +160,7 @@ void loop()
 
     if (right <= 7)
     {
-      analogWrite(leftMotorVelocity, 150);
+      analogWrite(leftMotorVelocity, 190);
       analogWrite(rightMotorVelocity, 255);
 
       analogWrite(leftControl1, 0);
