@@ -82,11 +82,11 @@ void reverse()
   analogWrite(rightControl2, 0);
   delay(1200);
 
-
   analogWrite(leftControl1, 0);
   analogWrite(leftControl2, 255);
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 255);
+  delay(500);
 }
 
 void loop() 
