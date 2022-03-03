@@ -63,6 +63,13 @@ void driveRight()
   analogWrite(rightControl1, 255);
   analogWrite(rightControl2, 0);
   delay(150);
+
+  analogWrite(leftControl1, 0);
+  analogWrite(leftControl2, 255);
+  analogWrite(rightControl1, 0);
+  analogWrite(rightControl2, 255);
+
+  delay(250);
 }
 
 void driveLeft()
@@ -82,6 +89,13 @@ void driveLeft()
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 255);
   delay(150);
+  
+  analogWrite(leftControl1, 0);
+  analogWrite(leftControl2, 255);
+  analogWrite(rightControl1, 0);
+  analogWrite(rightControl2, 255);
+
+  delay(250);
 }
 
 void reverse()
@@ -124,7 +138,7 @@ void loop()
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 255);
 
-  if (front > 12)
+  if (front > 21)
   {
     if (right > 9 && right < 11)
     {
@@ -181,7 +195,7 @@ void loop()
       analogWrite(rightControl1, 0);
       analogWrite(rightControl2, 255);
 
-      delay(200);
+      delay(250);
     }
   }
 
@@ -193,13 +207,13 @@ void loop()
   timeLeft = pulseIn(echoLeft, HIGH);
   left = timeLeft/29/2;
 
-  if (left <= 15 && right > 15 && front <= 12) driveRight();
+  if (left <= 15 && right > 20 && front <= 21) driveRight();
 
-  if (left > 15 && right > 15 && front <= 12) driveRight();
+  if (left > 15 && right > 20 && front <= 21) driveRight();
 
-  if (right <= 20 && left > 10 && front <= 12) driveLeft();
+  if (right <= 20 && left > 10 && front <= 21) driveLeft();
   
-  if (right <= 15 && left <= 15 && front <= 12) reverse();
+  if (right <= 20 && left <= 15 && front <= 21) reverse();
   
 }
 
