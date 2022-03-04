@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <NewPing.h>
 
 //Motor control pins
 const int leftMotorVelocity = 10;
@@ -10,31 +11,15 @@ const int leftControl2 = 6;
 const int rightControl1 = 5;
 const int rightControl2 = 4;
 
-//Ultrasonic sensor pins
-const int trigFront = A0;
-const int echoFront = A1;
+#define MAX_DISTANCE 50
 
-const int trigRight = A2;
-const int echoRight = A3;
-
-const int trigLeft = A4;
-const int echoLeft = A5;
-
-
-
+NewPing sonarLeft(13, 12, MAX_DISTANCE);
+NewPing sonarRight(3, 2, MAX_DISTANCE);
+NewPing sonarFront(1, 0, MAX_DISTANCE);
 
 void setup() 
 {
   Serial.begin(9600); //Initialises serial connection 
-
-  pinMode(trigFront, OUTPUT);
-  pinMode(echoFront, INPUT);
-
-  pinMode(trigRight, OUTPUT);
-  pinMode(echoRight, INPUT);
-
-  pinMode(trigLeft, OUTPUT);
-  pinMode(echoLeft, INPUT);
 
   pinMode(leftMotorVelocity, OUTPUT);
   pinMode(rightMotorVelocity, OUTPUT);
@@ -75,7 +60,6 @@ void driveRight()
 void driveLeft()
 {
 
-
   analogWrite(leftMotorVelocity, 0);
   analogWrite(rightMotorVelocity, 0);
 
@@ -112,23 +96,21 @@ void reverse()
 
 void loop() 
 {
-  long timeFront, timeLeft, timeRight, right, left, front;
+  int right, left, front, divergence, speedRight, speedLeft;
 
-  digitalWrite(trigFront, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigFront, HIGH);
-  delayMicroseconds(5);
-  digitalWrite(trigFront, LOW);
-  timeFront = pulseIn(echoFront, HIGH);
-  front = timeFront/29/2;
+  delay(50);
+  front = sonarFront.ping_cm();
 
-  digitalWrite(trigRight, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigRight, HIGH);
-  delayMicroseconds(5);
-  digitalWrite(trigRight, LOW);
-  timeRight = pulseIn(echoRight, HIGH);
-  right = timeRight/29/2;
+  delay(50);
+  right = sonarRight.ping_cm();
+
+  delay(50);
+  left = sonarLeft.ping_cm();
+  
+  delay(50);
+
+  divergence = (right - left);
+
 
   analogWrite(leftMotorVelocity, 255);
   analogWrite(rightMotorVelocity, 255);
@@ -140,7 +122,7 @@ void loop()
 
   if (front > 21)
   {
-    if (right > 9 && right < 11)
+    if (-1 <= divergence <= 1)
     {
       analogWrite(leftMotorVelocity, 255);
       analogWrite(rightMotorVelocity, 255);
@@ -151,10 +133,12 @@ void loop()
       analogWrite(rightControl2, 255);
     }
     
-    if (right >= 11 && right <= 20)
+    if (divergence > 1 && divergence <= 20)
     {
+      speedRight = map(divergence, 1, 20, 255, 120);
+
       analogWrite(leftMotorVelocity, 255);
-      analogWrite(rightMotorVelocity, 120);
+      analogWrite(rightMotorVelocity, speedRight);
 
       analogWrite(leftControl1, 0);
       analogWrite(leftControl2, 255);
@@ -162,9 +146,11 @@ void loop()
       analogWrite(rightControl2, 255);
     }
 
-    if (right <= 9)
+    if (divergence < -1 && divergence >= -20)
     {
-      analogWrite(leftMotorVelocity, 120);
+      speedLeft = map(abs(divergence), 1, 20, 255, 120);
+
+      analogWrite(leftMotorVelocity, speedLeft);
       analogWrite(rightMotorVelocity, 255);
 
       analogWrite(leftControl1, 0);
@@ -173,7 +159,7 @@ void loop()
       analogWrite(rightControl2, 255);
     }
 
-    if (right > 20)
+    if (divergence > 20)
     {
 
       analogWrite(leftMotorVelocity, 0);
@@ -197,23 +183,38 @@ void loop()
 
       delay(250);
     }
+
+    if (divergence < -20)
+    {
+
+      analogWrite(leftMotorVelocity, 0);
+      analogWrite(rightMotorVelocity, 0);
+
+      delay(120);
+
+      analogWrite(leftMotorVelocity, 255);
+      analogWrite(rightMotorVelocity, 255);
+
+      analogWrite(leftControl1, 255);
+      analogWrite(leftControl2, 0);
+      analogWrite(rightControl1, 0);
+      analogWrite(rightControl2, 255);
+      delay(150);
+
+      analogWrite(leftControl1, 0);
+      analogWrite(leftControl2, 255);
+      analogWrite(rightControl1, 0);
+      analogWrite(rightControl2, 255);
+
+      delay(250);
+    }
   }
 
-  digitalWrite(trigLeft, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigLeft, HIGH);
-  delayMicroseconds(5);
-  digitalWrite(trigLeft, LOW);
-  timeLeft = pulseIn(echoLeft, HIGH);
-  left = timeLeft/29/2;
+  if (right <= 3 && left <= 3 && front <= 3) reverse();
 
-  if (left <= 15 && right > 20 && front <= 21) driveRight();
+  if (left >= right && front <= 21) driveLeft();
 
-  if (left > 15 && right > 20 && front <= 21) driveRight();
-
-  if (right <= 20 && left > 10 && front <= 21) driveLeft();
-  
-  if (right <= 20 && left <= 15 && front <= 21) reverse();
+  if (right > left && front <= 21) driveRight();
   
 }
 
