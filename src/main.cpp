@@ -19,8 +19,6 @@ NewPing sonarFront(1, 0, MAX_DISTANCE);
 
 void setup() 
 {
-  Serial.begin(9600); //Initialises serial connection 
-
   pinMode(leftMotorVelocity, OUTPUT);
   pinMode(rightMotorVelocity, OUTPUT);
 
@@ -89,7 +87,7 @@ void reverse()
 
   analogWrite(leftControl1, 255);
   analogWrite(leftControl2, 0);
-  analogWrite(rightControl1, 0);
+  analogWrite(rightControl1, 255);
   analogWrite(rightControl2, 0);
   delay(400);
 }
@@ -110,7 +108,6 @@ void loop()
   delay(50);
 
   divergence = (right - left);
-
 
   analogWrite(leftMotorVelocity, 255);
   analogWrite(rightMotorVelocity, 255);
@@ -210,7 +207,7 @@ void loop()
     }
   }
 
-  if (right <= 3 && left <= 3 && front <= 3) reverse();
+  if (right <= 3 && front <= 3 || left <= 3 && front <= 3) reverse();
 
   if (left >= right && front <= 21) driveLeft();
 
