@@ -80,7 +80,7 @@ void driveLeft()
   delay(250);
 }
 
-void reverse()
+void unstuck()
 {
   analogWrite(leftMotorVelocity, 255);
   analogWrite(rightMotorVelocity, 255);
@@ -119,7 +119,7 @@ void loop()
 
   if (front > 21)
   {
-    if (-1 <= divergence <= 1)
+    if (-1 >= divergence && divergence <= 1)
     {
       analogWrite(leftMotorVelocity, 255);
       analogWrite(rightMotorVelocity, 255);
@@ -207,7 +207,11 @@ void loop()
     }
   }
 
-  if (right <= 3 && front <= 3 || left <= 3 && front <= 3) reverse();
+  if (right <= 3 || left <= 3 || front <= 3) {
+    unstuck();
+    if (right <= left) driveLeft();
+    else driveRight();
+  }
 
   if (left >= right && front <= 21) driveLeft();
 
