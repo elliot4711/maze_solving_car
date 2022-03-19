@@ -30,7 +30,7 @@ void setup()
   pinMode(rightControl1, OUTPUT);
   pinMode(rightControl2, OUTPUT);
 
-  Serial.begin(9600);
+  // Serial.begin(9600);
 
   delay(3000);
 }
