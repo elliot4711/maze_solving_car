@@ -11,10 +11,10 @@ const int leftControl2 = 6;
 const int rightControl1 = 5;
 const int rightControl2 = 4;
 
-const int rightStandard = 170;
+const int rightStandard = 230;
 const int leftStandard = 255;
 
-#define MAX_DISTANCE 999
+#define MAX_DISTANCE 50
 
 NewPing sonarLeft(13, 12, MAX_DISTANCE);
 NewPing sonarRight(3, 2, MAX_DISTANCE);
@@ -29,8 +29,6 @@ void setup()
   pinMode(leftControl2, OUTPUT);
   pinMode(rightControl1, OUTPUT);
   pinMode(rightControl2, OUTPUT);
-
-  // Serial.begin(9600);
 
   delay(3000);
 }
@@ -50,7 +48,7 @@ void driveRight()
   analogWrite(leftControl2, 255);
   analogWrite(rightControl1, 255);
   analogWrite(rightControl2, 0);
-  delay(150);
+  delay(175);
 
   analogWrite(leftControl1, 0);
   analogWrite(leftControl2, 255);
@@ -75,7 +73,7 @@ void driveLeft()
   analogWrite(leftControl2, 0);
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 255);
-  delay(150);
+  delay(175);
   
   analogWrite(leftControl1, 0);
   analogWrite(leftControl2, 255);
@@ -117,15 +115,15 @@ void loop()
   delay(50); */
 
   if (front == 0) {
-    front = 999;
+    front = 50;
   }
   
   if (right == 0) {
-    right = 999;
+    right = 50;
   }
 
   if (left == 0) {
-    left = 999;
+    left = 50;
   }
 
   divergence = (right - left);
@@ -172,7 +170,7 @@ void loop()
       analogWrite(rightControl2, 255);
     }
 
-    if (divergence > 20)
+    if (right >= 30)
     {
 
       analogWrite(leftMotorVelocity, 0);
@@ -187,7 +185,7 @@ void loop()
       analogWrite(leftControl2, 255);
       analogWrite(rightControl1, 255);
       analogWrite(rightControl2, 0);
-      delay(150);
+      delay(175);
 
       analogWrite(leftControl1, 0);
       analogWrite(leftControl2, 255);
@@ -197,7 +195,7 @@ void loop()
       delay(250);
     }
 
-    if (divergence < -20)
+    if (left > 30)
     {
 
       analogWrite(leftMotorVelocity, 0);
@@ -212,7 +210,7 @@ void loop()
       analogWrite(leftControl2, 0);
       analogWrite(rightControl1, 0);
       analogWrite(rightControl2, 255);
-      delay(150);
+      delay(175);
 
       analogWrite(leftControl1, 0);
       analogWrite(leftControl2, 255);
@@ -223,7 +221,7 @@ void loop()
     }
   }
 
-  if ((right <= 3 && front <= 3) || (left <= 3 && front <= 3) || front <= 3) {
+  if ((right <= 2) || (left <= 2) || front <= 4) {
     unstuck();
     if (right <= left) driveLeft();
     else driveRight();
