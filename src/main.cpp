@@ -14,7 +14,7 @@ const int rightControl2 = 7;
 const int rightStandard = 255;
 const int leftStandard = 255;
 
-#define MAX_DISTANCE 30
+#define MAX_DISTANCE 50
 
 NewPing sonarLeft(13, 12, MAX_DISTANCE);
 NewPing sonarRight(3, 2, MAX_DISTANCE);
@@ -127,15 +127,15 @@ void loop()
   left = sonarLeft.ping_cm();
 
   if (front == 0) {
-    front = 30;
+    front = MAX_DISTANCE;
   }
   
   if (right == 0) {
-    right = 30;
+    right = MAX_DISTANCE;
   }
 
   if (left == 0) {
-    left = 30;
+    left = MAX_DISTANCE;
   }
 
 /*   Serial.println("front");
@@ -165,7 +165,7 @@ void loop()
       analogWrite(rightControl2, 255);
     }
     
-    if (divergence > 1 && divergence <= 20)
+    if (divergence >1 && divergence <= 30)
     {
       speedRight = map(divergence, 1, 15, rightStandard, 0);
       speedRight = constrain(speedRight, 0, rightStandard);
@@ -179,7 +179,7 @@ void loop()
       analogWrite(rightControl2, 255);
     }
 
-    if (divergence < -1 && divergence >= -20)
+    if (divergence < -1 && divergence >= -30)
     {
       divergence = abs(divergence);
       speedLeft = map(divergence, 1, 15, leftStandard, 0);
