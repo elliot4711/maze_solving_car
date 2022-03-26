@@ -2,19 +2,19 @@
 #include <NewPing.h>
 
 //Motor control pins
-const int leftMotorVelocity = 10;
-const int rightMotorVelocity = 9;
+const int leftMotorVelocity = 9;
+const int rightMotorVelocity = 10;
 
-const int leftControl1 = 7;
-const int leftControl2 = 6;
+const int leftControl1 = 4;
+const int leftControl2 = 5;
 
-const int rightControl1 = 5;
-const int rightControl2 = 4;
+const int rightControl1 = 6;
+const int rightControl2 = 7;
 
-const int rightStandard = 230;
+const int rightStandard = 255;
 const int leftStandard = 255;
 
-#define MAX_DISTANCE 50
+#define MAX_DISTANCE 30
 
 NewPing sonarLeft(13, 12, MAX_DISTANCE);
 NewPing sonarRight(3, 2, MAX_DISTANCE);
@@ -29,12 +29,16 @@ void setup()
   pinMode(leftControl2, OUTPUT);
   pinMode(rightControl1, OUTPUT);
   pinMode(rightControl2, OUTPUT);
+  
+  // Serial.begin(9600);
 
   delay(3000);
 }
 
 void driveRight()
 {
+
+  delay(200);
 
   analogWrite(leftMotorVelocity, 0);
   analogWrite(rightMotorVelocity, 0);
@@ -48,18 +52,28 @@ void driveRight()
   analogWrite(leftControl2, 255);
   analogWrite(rightControl1, 255);
   analogWrite(rightControl2, 0);
-  delay(175);
+
+  delay(100);
+  
+  analogWrite(leftControl1, 0);
+  analogWrite(leftControl2, 0);
+  analogWrite(rightControl1, 0);
+  analogWrite(rightControl2, 0);
+
+  delay(120);
 
   analogWrite(leftControl1, 0);
   analogWrite(leftControl2, 255);
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 255);
 
-  delay(200);
+  delay(500);
 }
 
 void driveLeft()
 {
+
+  delay(200);
 
   analogWrite(leftMotorVelocity, 0);
   analogWrite(rightMotorVelocity, 0);
@@ -73,14 +87,21 @@ void driveLeft()
   analogWrite(leftControl2, 0);
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 255);
-  delay(175);
+  delay(100);
   
+  analogWrite(leftControl1, 0);
+  analogWrite(leftControl2, 0);
+  analogWrite(rightControl1, 0);
+  analogWrite(rightControl2, 0);
+
+  delay(120);
+
   analogWrite(leftControl1, 0);
   analogWrite(leftControl2, 255);
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 255);
 
-  delay(200);
+  delay(500);
 }
 
 void unstuck()
@@ -100,31 +121,34 @@ void loop()
   int right, left, front, divergence, speedRight, speedLeft;
 
   front = sonarFront.ping_cm();
-/*   Serial.println("front");
-  Serial.println(front);
-  delay(50); */
 
   right = sonarRight.ping_cm();
-/*   Serial.println("right");
-  Serial.println(right);
-  delay(50); */
 
   left = sonarLeft.ping_cm();
-/*   Serial.println("left");
-  Serial.println(left);
-  delay(50); */
 
   if (front == 0) {
-    front = 50;
+    front = 30;
   }
   
   if (right == 0) {
-    right = 50;
+    right = 30;
   }
 
   if (left == 0) {
-    left = 50;
+    left = 30;
   }
+
+/*   Serial.println("front");
+  Serial.println(front);
+  delay(50);
+  
+  Serial.println("right");
+  Serial.println(right);
+  delay(50);
+
+  Serial.println("left");
+  Serial.println(left);
+  delay(50); */
 
   divergence = (right - left);
 
@@ -143,8 +167,8 @@ void loop()
     
     if (divergence > 1 && divergence <= 20)
     {
-      speedRight = map(divergence, 1, 15, 170, 0);
-      speedRight = constrain(speedRight, 0, 170);
+      speedRight = map(divergence, 1, 15, rightStandard, 0);
+      speedRight = constrain(speedRight, 0, rightStandard);
 
       analogWrite(leftMotorVelocity, leftStandard);
       analogWrite(rightMotorVelocity, speedRight);
@@ -158,8 +182,8 @@ void loop()
     if (divergence < -1 && divergence >= -20)
     {
       divergence = abs(divergence);
-      speedLeft = map(divergence, 1, 15, 255, 0);
-      speedLeft = constrain(speedLeft, 0, 255);
+      speedLeft = map(divergence, 1, 15, leftStandard, 0);
+      speedLeft = constrain(speedLeft, 0, leftStandard);
 
       analogWrite(leftMotorVelocity, speedLeft);
       analogWrite(rightMotorVelocity, rightStandard);
@@ -172,52 +196,12 @@ void loop()
 
     if (right >= 30)
     {
-
-      analogWrite(leftMotorVelocity, 0);
-      analogWrite(rightMotorVelocity, 0);
-
-      delay(120);
-
-      analogWrite(leftMotorVelocity, leftStandard);
-      analogWrite(rightMotorVelocity, rightStandard);
-
-      analogWrite(leftControl1, 0);
-      analogWrite(leftControl2, 255);
-      analogWrite(rightControl1, 255);
-      analogWrite(rightControl2, 0);
-      delay(175);
-
-      analogWrite(leftControl1, 0);
-      analogWrite(leftControl2, 255);
-      analogWrite(rightControl1, 0);
-      analogWrite(rightControl2, 255);
-
-      delay(250);
+      driveRight();
     }
 
     if (left > 30)
     {
-
-      analogWrite(leftMotorVelocity, 0);
-      analogWrite(rightMotorVelocity, 0);
-
-      delay(120);
-
-      analogWrite(leftMotorVelocity, leftStandard);
-      analogWrite(rightMotorVelocity, rightStandard);
-
-      analogWrite(leftControl1, 255);
-      analogWrite(leftControl2, 0);
-      analogWrite(rightControl1, 0);
-      analogWrite(rightControl2, 255);
-      delay(175);
-
-      analogWrite(leftControl1, 0);
-      analogWrite(leftControl2, 255);
-      analogWrite(rightControl1, 0);
-      analogWrite(rightControl2, 255);
-
-      delay(250);
+      driveLeft();
     }
   }
 
