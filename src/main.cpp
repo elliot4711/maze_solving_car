@@ -178,7 +178,7 @@ void loop()
 
   divergence = (right - left);
 
-  if (front > 21)
+  if (front > 10)
   {
     if (-1 >= divergence && divergence <= 1)
     {
@@ -220,12 +220,12 @@ void loop()
       analogWrite(rightControl2, 255);
     }
 
-    if (right >= 30)
+    if (right >= 40)
     {
       driveRight();
     }
 
-    if (left > 30)
+    if (left > 40)
     {
       driveLeft();
     }
@@ -237,9 +237,9 @@ void loop()
     else driveRight();
   }
 
-  if (left >= right && front <= 21) driveLeft();
+  if (left >= right && front <= 10) driveLeft();
 
-  if (right > left && front <= 21) driveRight();
+  if (right > left && front <= 10) driveRight();
   
 }
 
