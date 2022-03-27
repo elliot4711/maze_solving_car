@@ -37,7 +37,6 @@ void setup()
 
 void driveRight()
 {
-  int front;
   delay(200);
 
   analogWrite(leftMotorVelocity, 0);
@@ -73,7 +72,6 @@ void driveRight()
 
 void driveLeft()
 {
-  int front;
   delay(200);
 
   analogWrite(leftMotorVelocity, 0);
@@ -155,7 +153,7 @@ void loop()
 
   divergence = (right - left);
 
-  if (front > 10)
+  if (front > 21)
   {
     if (-1 >= divergence && divergence <= 1)
     {
@@ -170,8 +168,8 @@ void loop()
     
     if (divergence >1 && divergence <= 30)
     {
-      speedRight = map(divergence, 1, 15, rightStandard, 0);
-      speedRight = constrain(speedRight, 0, rightStandard);
+      speedRight = map(divergence, 1, 15, rightStandard, 150);
+      speedRight = constrain(speedRight, 150, rightStandard);
 
       analogWrite(leftMotorVelocity, leftStandard);
       analogWrite(rightMotorVelocity, speedRight);
@@ -185,8 +183,8 @@ void loop()
     if (divergence < -1 && divergence >= -30)
     {
       divergence = abs(divergence);
-      speedLeft = map(divergence, 1, 15, leftStandard, 0);
-      speedLeft = constrain(speedLeft, 0, leftStandard);
+      speedLeft = map(divergence, 1, 15, leftStandard, 150);
+      speedLeft = constrain(speedLeft, 150, leftStandard);
 
       analogWrite(leftMotorVelocity, speedLeft);
       analogWrite(rightMotorVelocity, rightStandard);
@@ -195,6 +193,7 @@ void loop()
       analogWrite(leftControl2, 255);
       analogWrite(rightControl1, 0);
       analogWrite(rightControl2, 255);
+
     }
 
     if (right >= 40)
@@ -214,9 +213,9 @@ void loop()
     else driveRight();
   }
 
-  if (left >= right && front <= 10) driveLeft();
+  if (left >= right && front <= 21) driveLeft();
 
-  if (right > left && front <= 10) driveRight();
+  if (right > left && front <= 21) driveRight();
   
 }
 
