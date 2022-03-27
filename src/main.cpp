@@ -67,21 +67,7 @@ void driveRight()
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 255);
 
-  front = sonarFront.ping_cm();
-  while (front > 10)
-  {
-  analogWrite(leftControl1, 0);
-  analogWrite(leftControl2, 255);
-  analogWrite(rightControl1, 0);
-  analogWrite(rightControl2, 255);
-  front = sonarFront.ping_cm();
-  delay(50);
-  }
-
-  analogWrite(leftControl1, 0);
-  analogWrite(leftControl2, 0);
-  analogWrite(rightControl1, 0);
-  analogWrite(rightControl2, 0);
+  delay(500);
 
 }
 
@@ -111,21 +97,12 @@ void driveLeft()
 
   delay(120);
   
-  front = sonarFront.ping_cm();
-  while (front > 10)
-  {
   analogWrite(leftControl1, 0);
   analogWrite(leftControl2, 255);
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 255);
-  front = sonarFront.ping_cm();
-  delay(50);
-  }
 
-  analogWrite(leftControl1, 0);
-  analogWrite(leftControl2, 0);
-  analogWrite(rightControl1, 0);
-  analogWrite(rightControl2, 0);
+  delay(500);
 
 }
 
