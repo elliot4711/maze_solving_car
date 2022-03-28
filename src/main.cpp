@@ -11,7 +11,7 @@ const int leftControl2 = 5;
 const int rightControl1 = 6;
 const int rightControl2 = 7;
 
-const int rightStandard = 254;
+const int rightStandard = 255;
 const int leftStandard = 255;
 
 #define MAX_DISTANCE 50
@@ -89,7 +89,7 @@ void driveRight()
     front = MAX_DISTANCE;
     }
     duration = millis() - then;
-    if (duration > 500) {
+    if (duration > 600) {
       break;
     }
 
@@ -139,7 +139,7 @@ void driveLeft()
     front = MAX_DISTANCE;
     }
     duration = millis() - then;
-    if (duration > 500) {
+    if (duration > 600) {
       break;
     }
 
@@ -239,12 +239,12 @@ void loop()
 
     }
 
-    if (right >= 40)
+    if (right > 40)
     {
       driveRight();
     }
 
-    if (left > 40)
+    if (left >= 40)
     {
       driveLeft();
     }
@@ -252,8 +252,38 @@ void loop()
 
   if ((right <= 2) || (left <= 2) || front <= 4) {
     unstuck();
-    if (right <= left) driveLeft();
-    else driveRight();
+    if (right <= left) {
+      analogWrite(leftMotorVelocity, leftStandard);
+      analogWrite(rightMotorVelocity, rightStandard);
+
+      analogWrite(leftControl1, 255);
+      analogWrite(leftControl2, 0);
+      analogWrite(rightControl1, 0);
+      analogWrite(rightControl2, 255);
+      delay(100);
+
+      analogWrite(leftControl1, 0);
+      analogWrite(leftControl2, 255);
+      analogWrite(rightControl1, 0);
+      analogWrite(rightControl2, 255);
+      delay(100);
+    }
+    else {
+      analogWrite(leftMotorVelocity, leftStandard);
+      analogWrite(rightMotorVelocity, rightStandard);
+
+      analogWrite(leftControl1, 0);
+      analogWrite(leftControl2, 255);
+      analogWrite(rightControl1, 255);
+      analogWrite(rightControl2, 0);
+      delay(100);
+
+      analogWrite(leftControl1, 0);
+      analogWrite(leftControl2, 255);
+      analogWrite(rightControl1, 0);
+      analogWrite(rightControl2, 255);
+      delay(100);
+    }
   }
 
   if (left >= right && front <= STOP_DISTANCE) driveLeft();
