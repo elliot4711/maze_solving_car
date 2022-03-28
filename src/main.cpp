@@ -11,10 +11,11 @@ const int leftControl2 = 5;
 const int rightControl1 = 6;
 const int rightControl2 = 7;
 
-const int rightStandard = 255;
+const int rightStandard = 254;
 const int leftStandard = 255;
 
 #define MAX_DISTANCE 50
+#define STOP_DISTANCE 21
 
 NewPing sonarLeft(13, 12, MAX_DISTANCE);
 NewPing sonarRight(3, 2, MAX_DISTANCE);
@@ -35,14 +36,22 @@ void setup()
   delay(3000);
 }
 
+// void loop() {
+//   analogWrite(leftMotorVelocity, leftStandard);
+//   analogWrite(rightMotorVelocity, rightStandard);
+
+//   analogWrite(leftControl1, 0);
+//   analogWrite(leftControl2, 255);
+//   analogWrite(rightControl1, 0);
+//   analogWrite(rightControl2, 255);
+// }
+
 void driveRight()
 {
-  delay(200);
-
   analogWrite(leftMotorVelocity, 0);
   analogWrite(rightMotorVelocity, 0);
 
-  delay(120);
+  delay(250);
 
   analogWrite(leftMotorVelocity, leftStandard);
   analogWrite(rightMotorVelocity, rightStandard);
@@ -52,32 +61,48 @@ void driveRight()
   analogWrite(rightControl1, 255);
   analogWrite(rightControl2, 0);
 
-  delay(100);
+  delay(210);
   
   analogWrite(leftControl1, 0);
   analogWrite(leftControl2, 0);
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 0);
 
-  delay(120);
+  delay(200);
 
   analogWrite(leftControl1, 0);
   analogWrite(leftControl2, 255);
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 255);
 
-  delay(500);
+  int front;
+  unsigned long then, duration;
+
+  front = sonarFront.ping_cm();
+  if (front == 0) {
+    front = MAX_DISTANCE;
+  }
+  then = millis();
+  while (front >= STOP_DISTANCE){
+    front = sonarFront.ping_cm();
+    if (front == 0) {
+    front = MAX_DISTANCE;
+    }
+    duration = millis() - then;
+    if (duration > 500) {
+      break;
+    }
+
+  }
 
 }
 
 void driveLeft()
 {
-  delay(200);
-
   analogWrite(leftMotorVelocity, 0);
   analogWrite(rightMotorVelocity, 0);
 
-  delay(120);
+  delay(250);
 
   analogWrite(leftMotorVelocity, leftStandard);
   analogWrite(rightMotorVelocity, rightStandard);
@@ -86,21 +111,39 @@ void driveLeft()
   analogWrite(leftControl2, 0);
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 255);
-  delay(100);
+  delay(210);
   
   analogWrite(leftControl1, 0);
   analogWrite(leftControl2, 0);
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 0);
 
-  delay(120);
+  delay(200);
   
   analogWrite(leftControl1, 0);
   analogWrite(leftControl2, 255);
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 255);
+  
+  int front;
+  unsigned long then, duration;
 
-  delay(500);
+  front = sonarFront.ping_cm();
+  if (front == 0) {
+    front = MAX_DISTANCE;
+  }
+  then = millis();
+  while (front >= STOP_DISTANCE){
+    front = sonarFront.ping_cm();
+    if (front == 0) {
+    front = MAX_DISTANCE;
+    }
+    duration = millis() - then;
+    if (duration > 500) {
+      break;
+    }
+
+  }
 
 }
 
@@ -113,7 +156,7 @@ void unstuck()
   analogWrite(leftControl2, 0);
   analogWrite(rightControl1, 255);
   analogWrite(rightControl2, 0);
-  delay(400);
+  delay(500);
 }
 
 void loop() 
@@ -153,7 +196,7 @@ void loop()
 
   divergence = (right - left);
 
-  if (front > 21)
+  if (front > STOP_DISTANCE)
   {
     if (-1 >= divergence && divergence <= 1)
     {
@@ -168,8 +211,8 @@ void loop()
     
     if (divergence >1 && divergence <= 30)
     {
-      speedRight = map(divergence, 1, 15, rightStandard, 150);
-      speedRight = constrain(speedRight, 150, rightStandard);
+      speedRight = map(divergence, 1, 5, rightStandard, 235);
+      speedRight = constrain(speedRight, 235, rightStandard);
 
       analogWrite(leftMotorVelocity, leftStandard);
       analogWrite(rightMotorVelocity, speedRight);
@@ -183,8 +226,8 @@ void loop()
     if (divergence < -1 && divergence >= -30)
     {
       divergence = abs(divergence);
-      speedLeft = map(divergence, 1, 15, leftStandard, 150);
-      speedLeft = constrain(speedLeft, 150, leftStandard);
+      speedLeft = map(divergence, 1, 5, leftStandard, 235);
+      speedLeft = constrain(speedLeft, 235, leftStandard);
 
       analogWrite(leftMotorVelocity, speedLeft);
       analogWrite(rightMotorVelocity, rightStandard);
@@ -213,9 +256,9 @@ void loop()
     else driveRight();
   }
 
-  if (left >= right && front <= 21) driveLeft();
+  if (left >= right && front <= STOP_DISTANCE) driveLeft();
 
-  if (right > left && front <= 21) driveRight();
+  if (right > left && front <= STOP_DISTANCE) driveRight();
   
 }
 
