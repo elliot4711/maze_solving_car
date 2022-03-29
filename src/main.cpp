@@ -16,6 +16,8 @@ const int leftStandard = 255;
 
 #define MAX_DISTANCE 50
 #define STOP_DISTANCE 21
+#define STOP_DELAY 250
+#define TURN_DELAY 75
 
 NewPing sonarLeft(13, 12, MAX_DISTANCE);
 NewPing sonarRight(3, 2, MAX_DISTANCE);
@@ -31,7 +33,7 @@ void setup()
   pinMode(rightControl1, OUTPUT);
   pinMode(rightControl2, OUTPUT);
   
-  // Serial.begin(9600);
+  Serial.begin(9600);
 
   delay(3000);
 }
@@ -51,48 +53,42 @@ void driveRight()
   analogWrite(leftMotorVelocity, 0);
   analogWrite(rightMotorVelocity, 0);
 
-  delay(250);
+  delay(STOP_DELAY);
 
   analogWrite(leftMotorVelocity, leftStandard);
   analogWrite(rightMotorVelocity, rightStandard);
 
   analogWrite(leftControl1, 0);
   analogWrite(leftControl2, 255);
-  analogWrite(rightControl1, 255);
+  analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 0);
 
-  delay(210);
+  delay(300);
   
   analogWrite(leftControl1, 0);
   analogWrite(leftControl2, 0);
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 0);
 
-  delay(200);
+  delay(STOP_DELAY);
 
   analogWrite(leftControl1, 0);
   analogWrite(leftControl2, 255);
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 255);
 
-  int front;
-  unsigned long then, duration;
-
-  front = sonarFront.ping_cm();
-  if (front == 0) {
-    front = MAX_DISTANCE;
+  int right;
+  right = sonarRight.ping_cm();
+  if (right == 0) {
+    right = MAX_DISTANCE;
   }
-  then = millis();
-  while (front >= STOP_DISTANCE){
-    front = sonarFront.ping_cm();
-    if (front == 0) {
-    front = MAX_DISTANCE;
-    }
-    duration = millis() - then;
-    if (duration > 600) {
-      break;
-    }
 
+  while (right > 20) {
+  right = sonarRight.ping_cm();
+  if (right == 0) {
+    right = MAX_DISTANCE;
+  }
+  delay(30);
   }
 
 }
@@ -102,47 +98,41 @@ void driveLeft()
   analogWrite(leftMotorVelocity, 0);
   analogWrite(rightMotorVelocity, 0);
 
-  delay(250);
+  delay(STOP_DELAY);
 
   analogWrite(leftMotorVelocity, leftStandard);
   analogWrite(rightMotorVelocity, rightStandard);
 
-  analogWrite(leftControl1, 255);
+  analogWrite(leftControl1, 0);
   analogWrite(leftControl2, 0);
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 255);
-  delay(210);
+  delay(300);
   
   analogWrite(leftControl1, 0);
   analogWrite(leftControl2, 0);
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 0);
 
-  delay(200);
+  delay(STOP_DELAY);
   
   analogWrite(leftControl1, 0);
   analogWrite(leftControl2, 255);
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 255);
   
-  int front;
-  unsigned long then, duration;
-
-  front = sonarFront.ping_cm();
-  if (front == 0) {
-    front = MAX_DISTANCE;
+  int left;
+  left = sonarLeft.ping_cm();
+  if (left == 0) {
+    left = MAX_DISTANCE;
   }
-  then = millis();
-  while (front >= STOP_DISTANCE){
-    front = sonarFront.ping_cm();
-    if (front == 0) {
-    front = MAX_DISTANCE;
-    }
-    duration = millis() - then;
-    if (duration > 600) {
-      break;
-    }
 
+  while (left > 20) {
+    left = sonarLeft.ping_cm();
+    if (left == 0) {
+    left = MAX_DISTANCE;
+    }
+    delay(30);
   }
 
 }
@@ -241,16 +231,18 @@ void loop()
 
     if (right > 40)
     {
+      delay(TURN_DELAY);
       driveRight();
     }
 
     if (left >= 40)
     {
+      delay(TURN_DELAY);
       driveLeft();
     }
   }
 
-  if ((right <= 2) || (left <= 2) || front <= 4) {
+  if ((right <= 2) || (left <= 2) || front <= 2) {
     unstuck();
     if (right <= left) {
       analogWrite(leftMotorVelocity, leftStandard);
