@@ -159,8 +159,8 @@ void driveRight(){
 
   delay(250);
 
-  analogWrite(leftMotorVelocity, leftStandard);
-  analogWrite(rightMotorVelocity, rightStandard);
+  analogWrite(leftMotorVelocity, 180);
+  analogWrite(rightMotorVelocity, 180);
 
   analogWrite(leftControl1, 0);
   analogWrite(leftControl2, 255);
@@ -175,12 +175,15 @@ void driveRight(){
   rightFront = oldRight - newFront;
   frontLeft = oldFront - newLeft;
 
-  while (rightFront > 1 || rightFront < -1){
+  while (rightFront > 0.5 || rightFront < -0.5){
+
+    analogWrite(leftMotorVelocity, 180);
+    analogWrite(rightMotorVelocity, 180);
+
     analogWrite(leftControl1, 0);
     analogWrite(leftControl2, 255);
     analogWrite(rightControl1, 255);
     analogWrite(rightControl2, 0);
-    delay(30);
 
     newLeft = sonarLeft.ping_cm();
     newFront = sonarFront.ping_cm();
@@ -188,10 +191,14 @@ void driveRight(){
     rightFront = oldRight - newFront;
     frontLeft = oldFront - newLeft;
 
-    if (frontLeft < 1 && frontLeft > -1) {
+    if (frontLeft < 0.5 && frontLeft > -0.5) {
       break;
     }
+    delay(25);
   }
+
+  analogWrite(leftMotorVelocity, leftStandard);
+  analogWrite(rightMotorVelocity, rightStandard);
 
   analogWrite(leftControl1, 0);
   analogWrite(leftControl2, 0);
@@ -205,7 +212,7 @@ void driveRight(){
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 255);
 
-  delay(200);
+  delay(600);
 
 }
 
@@ -219,8 +226,8 @@ void driveLeft(){
 
   delay(250);
 
-  analogWrite(leftMotorVelocity, leftStandard);
-  analogWrite(rightMotorVelocity, rightStandard);
+  analogWrite(leftMotorVelocity, 180);
+  analogWrite(rightMotorVelocity, 180);
 
   analogWrite(leftControl1, 255);
   analogWrite(leftControl2, 0);
@@ -235,12 +242,14 @@ void driveLeft(){
   leftFront = oldLeft - newFront;
   frontRight = oldFront - newRight;
 
-  while (leftFront > 1 || leftFront < -1){
+  while (leftFront > 0.5 || leftFront < -0.5){
+    analogWrite(leftMotorVelocity, 180);
+    analogWrite(rightMotorVelocity, 180);
+
     analogWrite(leftControl1, 255);
     analogWrite(leftControl2, 0);
     analogWrite(rightControl1, 0);
     analogWrite(rightControl2, 255);
-    delay(30);
 
     newRight = sonarRight.ping_cm();
     newFront = sonarFront.ping_cm();
@@ -248,10 +257,14 @@ void driveLeft(){
     leftFront = oldLeft - newFront;
     frontRight = oldFront - newRight;
 
-    if (frontRight < 1 && frontRight > -1) {
+    if (frontRight < 0.5 && frontRight > -0.5) {
       break;
     }
+    delay(25);
   }
+ 
+  analogWrite(leftMotorVelocity, leftStandard);
+  analogWrite(rightMotorVelocity, rightStandard);
 
   analogWrite(leftControl1, 0);
   analogWrite(leftControl2, 0);
@@ -265,7 +278,7 @@ void driveLeft(){
   analogWrite(rightControl1, 0);
   analogWrite(rightControl2, 255);
 
-  delay(200);
+  delay(500);
 
 }
 
