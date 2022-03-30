@@ -14,7 +14,7 @@ const int rightControl2 = 7;
 const int rightStandard = 255;
 const int leftStandard = 255;
 
-#define MAX_DISTANCE 50
+#define MAX_DISTANCE 200
 #define STOP_DISTANCE 21
 #define STOP_DELAY 250
 #define TURN_DELAY 75
@@ -48,94 +48,94 @@ void setup()
 //   analogWrite(rightControl2, 255);
 // }
 
-void driveRight()
-{
-  analogWrite(leftMotorVelocity, 0);
-  analogWrite(rightMotorVelocity, 0);
+// void driveRight()
+// {
+//   analogWrite(leftMotorVelocity, 0);
+//   analogWrite(rightMotorVelocity, 0);
 
-  delay(STOP_DELAY);
+//   delay(STOP_DELAY);
 
-  analogWrite(leftMotorVelocity, leftStandard);
-  analogWrite(rightMotorVelocity, rightStandard);
+//   analogWrite(leftMotorVelocity, leftStandard);
+//   analogWrite(rightMotorVelocity, rightStandard);
 
-  analogWrite(leftControl1, 0);
-  analogWrite(leftControl2, 255);
-  analogWrite(rightControl1, 0);
-  analogWrite(rightControl2, 0);
+//   analogWrite(leftControl1, 0);
+//   analogWrite(leftControl2, 255);
+//   analogWrite(rightControl1, 0);
+//   analogWrite(rightControl2, 0);
 
-  delay(300);
+//   delay(300);
   
-  analogWrite(leftControl1, 0);
-  analogWrite(leftControl2, 0);
-  analogWrite(rightControl1, 0);
-  analogWrite(rightControl2, 0);
+//   analogWrite(leftControl1, 0);
+//   analogWrite(leftControl2, 0);
+//   analogWrite(rightControl1, 0);
+//   analogWrite(rightControl2, 0);
 
-  delay(STOP_DELAY);
+//   delay(STOP_DELAY);
 
-  analogWrite(leftControl1, 0);
-  analogWrite(leftControl2, 255);
-  analogWrite(rightControl1, 0);
-  analogWrite(rightControl2, 255);
+//   analogWrite(leftControl1, 0);
+//   analogWrite(leftControl2, 255);
+//   analogWrite(rightControl1, 0);
+//   analogWrite(rightControl2, 255);
 
-  int right;
-  right = sonarRight.ping_cm();
-  if (right == 0) {
-    right = MAX_DISTANCE;
-  }
+//   int right;
+//   right = sonarRight.ping_cm();
+//   if (right == 0) {
+//     right = MAX_DISTANCE;
+//   }
 
-  while (right > 20) {
-  right = sonarRight.ping_cm();
-  if (right == 0) {
-    right = MAX_DISTANCE;
-  }
-  delay(30);
-  }
+//   while (right > 20) {
+//   right = sonarRight.ping_cm();
+//   if (right == 0) {
+//     right = MAX_DISTANCE;
+//   }
+//   delay(30);
+//   }
 
-}
+// }
 
-void driveLeft()
-{
-  analogWrite(leftMotorVelocity, 0);
-  analogWrite(rightMotorVelocity, 0);
+// void driveLeft()
+// {
+//   analogWrite(leftMotorVelocity, 0);
+//   analogWrite(rightMotorVelocity, 0);
 
-  delay(STOP_DELAY);
+//   delay(STOP_DELAY);
 
-  analogWrite(leftMotorVelocity, leftStandard);
-  analogWrite(rightMotorVelocity, rightStandard);
+//   analogWrite(leftMotorVelocity, leftStandard);
+//   analogWrite(rightMotorVelocity, rightStandard);
 
-  analogWrite(leftControl1, 0);
-  analogWrite(leftControl2, 0);
-  analogWrite(rightControl1, 0);
-  analogWrite(rightControl2, 255);
-  delay(300);
+//   analogWrite(leftControl1, 0);
+//   analogWrite(leftControl2, 0);
+//   analogWrite(rightControl1, 0);
+//   analogWrite(rightControl2, 255);
+//   delay(300);
   
-  analogWrite(leftControl1, 0);
-  analogWrite(leftControl2, 0);
-  analogWrite(rightControl1, 0);
-  analogWrite(rightControl2, 0);
+//   analogWrite(leftControl1, 0);
+//   analogWrite(leftControl2, 0);
+//   analogWrite(rightControl1, 0);
+//   analogWrite(rightControl2, 0);
 
-  delay(STOP_DELAY);
+//   delay(STOP_DELAY);
   
-  analogWrite(leftControl1, 0);
-  analogWrite(leftControl2, 255);
-  analogWrite(rightControl1, 0);
-  analogWrite(rightControl2, 255);
+//   analogWrite(leftControl1, 0);
+//   analogWrite(leftControl2, 255);
+//   analogWrite(rightControl1, 0);
+//   analogWrite(rightControl2, 255);
   
-  int left;
-  left = sonarLeft.ping_cm();
-  if (left == 0) {
-    left = MAX_DISTANCE;
-  }
+//   int left;
+//   left = sonarLeft.ping_cm();
+//   if (left == 0) {
+//     left = MAX_DISTANCE;
+//   }
 
-  while (left > 20) {
-    left = sonarLeft.ping_cm();
-    if (left == 0) {
-    left = MAX_DISTANCE;
-    }
-    delay(30);
-  }
+//   while (left > 20) {
+//     left = sonarLeft.ping_cm();
+//     if (left == 0) {
+//     left = MAX_DISTANCE;
+//     }
+//     delay(30);
+//   }
 
-}
+// }
 
 void unstuck()
 {
@@ -147,6 +147,126 @@ void unstuck()
   analogWrite(rightControl1, 255);
   analogWrite(rightControl2, 0);
   delay(500);
+}
+
+void driveRight(){
+  int oldFront, oldRight, newLeft, newFront, rightFront, frontLeft;
+  oldFront = sonarFront.ping_cm();
+  oldRight = sonarRight.ping_cm();
+
+  analogWrite(leftMotorVelocity, 0);
+  analogWrite(rightMotorVelocity, 0);
+
+  delay(250);
+
+  analogWrite(leftMotorVelocity, leftStandard);
+  analogWrite(rightMotorVelocity, rightStandard);
+
+  analogWrite(leftControl1, 0);
+  analogWrite(leftControl2, 255);
+  analogWrite(rightControl1, 255);
+  analogWrite(rightControl2, 0);
+
+  delay(50);
+
+  newLeft = sonarLeft.ping_cm();
+  newFront = sonarFront.ping_cm();
+
+  rightFront = oldRight - newFront;
+  frontLeft = oldFront - newLeft;
+
+  while (rightFront > 1 || rightFront < -1){
+    analogWrite(leftControl1, 0);
+    analogWrite(leftControl2, 255);
+    analogWrite(rightControl1, 255);
+    analogWrite(rightControl2, 0);
+    delay(30);
+
+    newLeft = sonarLeft.ping_cm();
+    newFront = sonarFront.ping_cm();
+
+    rightFront = oldRight - newFront;
+    frontLeft = oldFront - newLeft;
+
+    if (frontLeft < 1 && frontLeft > -1) {
+      break;
+    }
+  }
+
+  analogWrite(leftControl1, 0);
+  analogWrite(leftControl2, 0);
+  analogWrite(rightControl1, 0);
+  analogWrite(rightControl2, 0);
+
+  delay(200);
+
+  analogWrite(leftControl1, 0);
+  analogWrite(leftControl2, 255);
+  analogWrite(rightControl1, 0);
+  analogWrite(rightControl2, 255);
+
+  delay(200);
+
+}
+
+void driveLeft(){
+  int oldFront, oldLeft, newRight, newFront, leftFront, frontRight;
+  oldFront = sonarFront.ping_cm();
+  oldLeft = sonarLeft.ping_cm();
+
+  analogWrite(leftMotorVelocity, 0);
+  analogWrite(rightMotorVelocity, 0);
+
+  delay(250);
+
+  analogWrite(leftMotorVelocity, leftStandard);
+  analogWrite(rightMotorVelocity, rightStandard);
+
+  analogWrite(leftControl1, 255);
+  analogWrite(leftControl2, 0);
+  analogWrite(rightControl1, 0);
+  analogWrite(rightControl2, 255);
+
+  delay(50);
+
+  newRight = sonarRight.ping_cm();
+  newFront = sonarFront.ping_cm();
+
+  leftFront = oldLeft - newFront;
+  frontRight = oldFront - newRight;
+
+  while (leftFront > 1 || leftFront < -1){
+    analogWrite(leftControl1, 255);
+    analogWrite(leftControl2, 0);
+    analogWrite(rightControl1, 0);
+    analogWrite(rightControl2, 255);
+    delay(30);
+
+    newRight = sonarRight.ping_cm();
+    newFront = sonarFront.ping_cm();
+
+    leftFront = oldLeft - newFront;
+    frontRight = oldFront - newRight;
+
+    if (frontRight < 1 && frontRight > -1) {
+      break;
+    }
+  }
+
+  analogWrite(leftControl1, 0);
+  analogWrite(leftControl2, 0);
+  analogWrite(rightControl1, 0);
+  analogWrite(rightControl2, 0);
+
+  delay(200);
+
+  analogWrite(leftControl1, 0);
+  analogWrite(leftControl2, 255);
+  analogWrite(rightControl1, 0);
+  analogWrite(rightControl2, 255);
+
+  delay(200);
+
 }
 
 void loop() 
