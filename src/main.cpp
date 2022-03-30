@@ -362,7 +362,7 @@ void loop()
     }
   }
 
-  if ((right <= 2) || (left <= 2) || front <= 2) {
+  if ((right <= 2) || (left <= 2) || front <= 4) {
     unstuck();
     if (right <= left) {
       analogWrite(leftMotorVelocity, leftStandard);
