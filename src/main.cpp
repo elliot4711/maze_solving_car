@@ -33,7 +33,7 @@ void setup()
   pinMode(rightControl1, OUTPUT);
   pinMode(rightControl2, OUTPUT);
   
-  Serial.begin(9600);
+  // Serial.begin(9600);
 
   delay(3000);
 }
@@ -159,8 +159,8 @@ void driveRight(){
 
   delay(250);
 
-  analogWrite(leftMotorVelocity, 180);
-  analogWrite(rightMotorVelocity, 180);
+  analogWrite(leftMotorVelocity, 150);
+  analogWrite(rightMotorVelocity, 150);
 
   analogWrite(leftControl1, 0);
   analogWrite(leftControl2, 255);
@@ -175,10 +175,10 @@ void driveRight(){
   rightFront = oldRight - newFront;
   frontLeft = oldFront - newLeft;
 
-  while (rightFront > 0.5 || rightFront < -0.5){
+  while (rightFront > 1 || rightFront < -1){
 
-    analogWrite(leftMotorVelocity, 180);
-    analogWrite(rightMotorVelocity, 180);
+    analogWrite(leftMotorVelocity, 150);
+    analogWrite(rightMotorVelocity, 150);
 
     analogWrite(leftControl1, 0);
     analogWrite(leftControl2, 255);
@@ -191,7 +191,7 @@ void driveRight(){
     rightFront = oldRight - newFront;
     frontLeft = oldFront - newLeft;
 
-    if (frontLeft < 0.5 && frontLeft > -0.5) {
+    if (frontLeft < 1 && frontLeft > -1) {
       break;
     }
     delay(25);
@@ -226,8 +226,8 @@ void driveLeft(){
 
   delay(250);
 
-  analogWrite(leftMotorVelocity, 180);
-  analogWrite(rightMotorVelocity, 180);
+  analogWrite(leftMotorVelocity, 150);
+  analogWrite(rightMotorVelocity, 150);
 
   analogWrite(leftControl1, 255);
   analogWrite(leftControl2, 0);
@@ -242,9 +242,9 @@ void driveLeft(){
   leftFront = oldLeft - newFront;
   frontRight = oldFront - newRight;
 
-  while (leftFront > 0.5 || leftFront < -0.5){
-    analogWrite(leftMotorVelocity, 180);
-    analogWrite(rightMotorVelocity, 180);
+  while (leftFront > 1 || leftFront < -1){
+    analogWrite(leftMotorVelocity, 150);
+    analogWrite(rightMotorVelocity, 150);
 
     analogWrite(leftControl1, 255);
     analogWrite(leftControl2, 0);
@@ -257,7 +257,7 @@ void driveLeft(){
     leftFront = oldLeft - newFront;
     frontRight = oldFront - newRight;
 
-    if (frontRight < 0.5 && frontRight > -0.5) {
+    if (frontRight < 1 && frontRight > -1) {
       break;
     }
     delay(25);
