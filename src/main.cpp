@@ -15,6 +15,8 @@ const int rightStandard = 252 * 0.785;
 const int leftStandard = 255 * 0.785;
 const int rightMax = 252;
 const int leftMax = 255;
+const int rightMin = 140;
+const int leftMin = 140;
 
 #define MAX_DISTANCE 50
 #define STOP_DISTANCE 21
@@ -23,9 +25,9 @@ NewPing sonarLeft(13, 12, MAX_DISTANCE);
 NewPing sonarRight(3, 2, MAX_DISTANCE);
 NewPing sonarFront(11, 8, MAX_DISTANCE);
 
-float Kp = 3; //set up the constants value
-float Ki = 0;
-float Kd = 4.4;
+float Kp = 0.0195; //set up the constants value 1.5
+float Ki = 0; //maybe 0.001
+float Kd = 0.65; //2.5 /0.4
 int P;
 int I;
 int D;
@@ -60,22 +62,22 @@ void setup()
 void loop() {
   int right, left, front, speedRight, speedLeft, error, motorspeed;
   
-  front = sonarFront.ping_cm();
+  front = sonarFront.ping();
 
-  right = sonarRight.ping_cm();
+  right = sonarRight.ping();
 
-  left = sonarLeft.ping_cm();
+  left = sonarLeft.ping();
 
   if (front == 0) {
-    front = MAX_DISTANCE;
+    front = 2940;
   }
   
   if (right == 0) {
-    right = MAX_DISTANCE;
+    right = 2940;
   }
 
   if (left == 0) {
-    left = MAX_DISTANCE;
+    left = 2940;
   }
 
   Serial.println("front");
@@ -85,21 +87,21 @@ void loop() {
   Serial.println("left");
   Serial.println(left);
 
-  if (left > 35){
+  if (left > 5000){ // 2060
     int startTime = millis();
     int time = millis();
     int duration = time - startTime;
     while (duration < 400){
-      left = sonarLeft.ping_cm();
+      left = sonarLeft.ping();
       if (left == 0) {
-        left = MAX_DISTANCE;
+        left = 2940;
       }
-      error = 8 - left;
+      error = 470 - left;
       P = error;
       I = I + error;
       D = error - lastError;
       lastError = error;
-      motorspeed = P*2.5 + I*0 + D*0;
+      motorspeed = P*0.04 + I*0 + D*0;
 
       speedRight = rightStandard - (motorspeed * 0.99);
       speedLeft = leftStandard + motorspeed;
@@ -136,21 +138,21 @@ void loop() {
     delay(150);
   }
 
-  if (right > 35){
+  if (right > 5000){ // 2060
     int startTime = millis();
     int time = millis();
     int duration = time - startTime;
     while (duration < 400){
-      right = sonarRight.ping_cm();
+      right = sonarRight.ping();
       if (right == 0) {
-        right = MAX_DISTANCE;
+        right = 2940;
       }
-      error = right - 8;
+      error = right - 470;
       P = error;
       I = I + error;
       D = error - lastError;
       lastError = error;
-      motorspeed = P*2.5 + I*0 + D*0;
+      motorspeed = P*0.04 + I*0 + D*0;
 
       speedRight = rightStandard - (motorspeed * 0.99);
       speedLeft = leftStandard + motorspeed;
@@ -207,13 +209,13 @@ void loop() {
     {
       speedLeft = leftMax;
     }
-    if (speedRight < 0)
+    if (speedRight < rightMin)
     {
-      speedRight = 0;
+      speedRight = rightMin;
     }
-    if (speedLeft < 0)
+    if (speedLeft < leftMin)
     {
-      speedLeft = 0;
+      speedLeft = rightMin;
     }
 
     analogWrite(leftMotorVelocity, speedLeft);
@@ -224,6 +226,6 @@ void loop() {
     analogWrite(rightControl1, 0);
     analogWrite(rightControl2, 255);
     
-    delay(25);
+    delay(30);
   }
 }
