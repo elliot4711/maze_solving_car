@@ -11,9 +11,9 @@ const int leftControl2 = 5;
 const int rightControl1 = 6;
 const int rightControl2 = 7;
 
-const int rightStandard = 252 * 0.785;
-const int leftStandard = 255 * 0.785;
-const int rightMax = 252;
+const int rightStandard = 255 * 0.85;
+const int leftStandard = 255 * 0.85; //0.785
+const int rightMax = 255;
 const int leftMax = 255;
 const int rightMin = 140;
 const int leftMin = 140;
@@ -26,7 +26,7 @@ NewPing sonarRight(3, 2, MAX_DISTANCE);
 NewPing sonarFront(11, 8, MAX_DISTANCE);
 
 float Kp = 0.0195; //set up the constants value 1.5
-float Ki = 0; //maybe 0.001
+float Ki = 0.0003; //maybe 0.001
 float Kd = 0.65; //2.5 /0.4
 int P;
 int I;
@@ -87,23 +87,31 @@ void loop() {
   Serial.println("left");
   Serial.println(left);
 
-  if (left > 5000){ // 2060
+  if (left > 2350){ // 2060
     int startTime = millis();
     int time = millis();
     int duration = time - startTime;
-    while (duration < 400){
+    while (duration < 175){
       left = sonarLeft.ping();
       if (left == 0) {
         left = 2940;
       }
-      error = 470 - left;
+      front = sonarFront.ping();
+      if (front == 0) {
+        front = 2940;
+      }
+      error = 529 - left;
       P = error;
       I = I + error;
       D = error - lastError;
       lastError = error;
-      motorspeed = P*0.04 + I*0 + D*0;
+      motorspeed = P*Kp + I*Ki + D*Kd;
 
-      speedRight = rightStandard - (motorspeed * 0.99);
+      if (front < 353) {
+        motorspeed = motorspeed * 2;
+      }
+
+      speedRight = rightStandard - (motorspeed);
       speedLeft = leftStandard + motorspeed;
       if (speedRight > rightMax)
       {
@@ -113,13 +121,13 @@ void loop() {
       {
         speedLeft = leftMax;
       }
-      if (speedRight < 0)
+      if (speedRight < rightMin)
       {
-        speedRight = 0;
+        speedRight = rightMin;
       }
-      if (speedLeft < 0)
+      if (speedLeft < leftMin)
       {
-        speedLeft = 0;
+        speedLeft = leftMin;
       }
 
       analogWrite(leftMotorVelocity, speedLeft);
@@ -132,29 +140,35 @@ void loop() {
       
       time = millis();
       duration = time - startTime;
+      delay(30);
     }
-    analogWrite(leftMotorVelocity, leftStandard);
-    analogWrite(rightMotorVelocity, rightStandard);
-    delay(150);
   }
 
-  if (right > 5000){ // 2060
+  if (right > 2350){ // 2060
     int startTime = millis();
     int time = millis();
     int duration = time - startTime;
-    while (duration < 400){
+    while (duration < 175){
       right = sonarRight.ping();
       if (right == 0) {
         right = 2940;
       }
-      error = right - 470;
+      front = sonarFront.ping();
+      if (front == 0) {
+        front = 2940;
+      }
+      error = right - 529;
       P = error;
       I = I + error;
       D = error - lastError;
       lastError = error;
-      motorspeed = P*0.04 + I*0 + D*0;
+      motorspeed = P*Kp + I*Ki + D*Kd;
 
-      speedRight = rightStandard - (motorspeed * 0.99);
+      if (front < 353) {
+        motorspeed = motorspeed * 2;
+      }
+
+      speedRight = rightStandard - (motorspeed);
       speedLeft = leftStandard + motorspeed;
       if (speedRight > rightMax)
       {
@@ -164,13 +178,13 @@ void loop() {
       {
         speedLeft = leftMax;
       }
-      if (speedRight < 0)
+      if (speedRight < rightMin)
       {
-        speedRight = 0;
+        speedRight = rightMin;
       }
-      if (speedLeft < 0)
+      if (speedLeft < leftMin)
       {
-        speedLeft = 0;
+        speedLeft = leftMin;
       }
 
       analogWrite(leftMotorVelocity, speedLeft);
@@ -183,11 +197,8 @@ void loop() {
       
       time = millis();
       duration = time - startTime;
-      delay(25);
+      delay(30);
     }
-    analogWrite(leftMotorVelocity, leftStandard);
-    analogWrite(rightMotorVelocity, rightStandard);
-    delay(150);
   }
 
   else{
@@ -199,7 +210,7 @@ void loop() {
     lastError = error;
     motorspeed = P*Kp + I*Ki + D*Kd;
   
-    speedRight = rightStandard - (motorspeed * 0.99);
+    speedRight = rightStandard - (motorspeed);
     speedLeft = leftStandard + motorspeed;
     if (speedRight > rightMax)
     {
