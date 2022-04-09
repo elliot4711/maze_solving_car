@@ -2,8 +2,8 @@
 #include <NewPing.h>
 
 //Motor control pins
-const int leftMotorVelocity = 10;
-const int rightMotorVelocity = 9;
+const int leftMotorVelocity = 9;
+const int rightMotorVelocity = 10;
 
 const int leftControl1 = 4;
 const int leftControl2 = 5;
@@ -11,9 +11,9 @@ const int leftControl2 = 5;
 const int rightControl1 = 6;
 const int rightControl2 = 7;
 
-const int rightStandard = 250 * 0.785;
+const int rightStandard = 252 * 0.785;
 const int leftStandard = 255 * 0.785;
-const int rightMax = 250;
+const int rightMax = 252;
 const int leftMax = 255;
 
 #define MAX_DISTANCE 50
@@ -48,8 +48,8 @@ void setup()
 }
 
 // void loop() {
-//   analogWrite(leftMotorVelocity, rightMax);
-//   analogWrite(rightMotorVelocity, leftMax);
+//   analogWrite(leftMotorVelocity, leftMax);
+//   analogWrite(rightMotorVelocity, rightMax);
 
 //   analogWrite(leftControl1, 0);
 //   analogWrite(leftControl2, 255);
@@ -101,8 +101,8 @@ void loop() {
       lastError = error;
       motorspeed = P*2.5 + I*0 + D*0;
 
-      speedRight = rightStandard + (motorspeed * 0.98);
-      speedLeft = leftStandard - motorspeed;
+      speedRight = rightStandard - (motorspeed * 0.99);
+      speedLeft = leftStandard + motorspeed;
       if (speedRight > rightMax)
       {
         speedRight = rightMax;
@@ -152,8 +152,8 @@ void loop() {
       lastError = error;
       motorspeed = P*2.5 + I*0 + D*0;
 
-      speedRight = rightStandard + (motorspeed * 0.98);
-      speedLeft = leftStandard - motorspeed;
+      speedRight = rightStandard - (motorspeed * 0.99);
+      speedLeft = leftStandard + motorspeed;
       if (speedRight > rightMax)
       {
         speedRight = rightMax;
@@ -197,8 +197,8 @@ void loop() {
     lastError = error;
     motorspeed = P*Kp + I*Ki + D*Kd;
   
-    speedRight = rightStandard + (motorspeed * 0.98);
-    speedLeft = leftStandard - motorspeed;
+    speedRight = rightStandard - (motorspeed * 0.99);
+    speedLeft = leftStandard + motorspeed;
     if (speedRight > rightMax)
     {
       speedRight = rightMax;
