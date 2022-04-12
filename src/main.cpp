@@ -54,8 +54,8 @@ void setup()
 }
 
 // void loop() {
-//   analogWrite(leftMotorVelocity, leftMax);
-//   analogWrite(rightMotorVelocity, rightMax);
+//   analogWrite(leftMotorVelocity, 130);
+//   analogWrite(rightMotorVelocity, 150);
 
 //   analogWrite(leftControl1, 0);
 //   analogWrite(leftControl2, 255);
@@ -92,12 +92,14 @@ void loop() {
   Serial.println(left);
 
   if (left > 2350){ // 2060
-    rightMin = 100;
-    leftMin = 100;
+    rightMin = 120;
+    leftMin = 120 * 0.85;
     int startTime = millis();
     int time = millis();
     int duration = time - startTime;
-    while (duration < 475){
+    analogWrite(leftMotorVelocity, 0);
+    analogWrite(rightMotorVelocity, 0);
+    while (duration < 500){
       left = sonarLeft.ping();
       if (left == 0) {
         left = 2940;
@@ -106,7 +108,7 @@ void loop() {
       if (front == 0) {
         front = 2940;
       }
-      leftError = 294 - left;
+      leftError = 470 - left;
       P = leftError;
       Ileft = Ileft + leftError;
       Dleft = leftError - lastError;
@@ -152,11 +154,13 @@ void loop() {
 
   if (right > 2350){ // 2060
     rightMin = 120;
-    leftMin = 120;
+    leftMin = 120 * 0.85;
     int startTime = millis();
     int time = millis();
     int duration = time - startTime;
-    while (duration < 475){
+    analogWrite(leftMotorVelocity, 0);
+    analogWrite(rightMotorVelocity, 0);
+    while (duration < 500){
       right = sonarRight.ping();
       if (right == 0) {
         right = 2940;
