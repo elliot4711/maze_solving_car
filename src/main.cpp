@@ -106,19 +106,19 @@ void loop() {
       if (front == 0) {
         front = 2940;
       }
-      leftError = 470 - left;
+      leftError = 294 - left;
       P = leftError;
       Ileft = Ileft + leftError;
       Dleft = leftError - lastError;
       lastError = leftError;
-      motorspeed = P*Kp*3 + Ileft*Ki + Dleft*Kd;
+      motorspeed = P*Kp*4 + Ileft*Ki + Dleft*Kd;
 
       if (front < 470) {
         motorspeed = motorspeed * 2;
       }
 
-      speedRight = rightStandard - (motorspeed);
-      speedLeft = leftStandard + motorspeed;
+      speedRight = 255 - (motorspeed);
+      speedLeft = 255 + motorspeed;
       if (speedRight > rightMax)
       {
         speedRight = rightMax;
@@ -151,8 +151,8 @@ void loop() {
   }
 
   if (right > 2350){ // 2060
-    rightMin = 100;
-    leftMin = 100;
+    rightMin = 120;
+    leftMin = 120;
     int startTime = millis();
     int time = millis();
     int duration = time - startTime;
@@ -170,14 +170,14 @@ void loop() {
       Iright = Iright + rightError;
       Dright = rightError - lastError;
       lastError = rightError;
-      motorspeed = P*Kp*3 + Iright*Ki + Dright*Kd;
+      motorspeed = P*Kp*4 + Iright*Ki + Dright*Kd;
 
       if (front < 470) {
         motorspeed = motorspeed * 2;
       }
 
-      speedRight = rightStandard - (motorspeed);
-      speedLeft = leftStandard + motorspeed;
+      speedRight = 255 - (motorspeed);
+      speedLeft = 255 + motorspeed;
       if (speedRight > rightMax)
       {
         speedRight = rightMax;
