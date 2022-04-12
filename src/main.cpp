@@ -15,8 +15,8 @@ const int rightStandard = 255 * 0.85;
 const int leftStandard = 255 * 0.85; //0.785
 const int rightMax = 255;
 const int leftMax = 255;
-const int rightMin = 140;
-const int leftMin = 140;
+int rightMin = 140;
+int leftMin = 140;
 
 #define MAX_DISTANCE 50
 #define STOP_DISTANCE 21
@@ -31,6 +31,10 @@ float Kd = 0.65; //2.5 /0.4
 int P;
 int I;
 int D;
+int Ileft;
+int Iright;
+int Dleft;
+int Dright;
 
 int lastError = 0;
 
@@ -60,7 +64,7 @@ void setup()
 // }
 
 void loop() {
-  int right, left, front, speedRight, speedLeft, error, motorspeed;
+  int right, left, front, speedRight, speedLeft, error, motorspeed, leftError, rightError;
   
   front = sonarFront.ping();
 
@@ -88,10 +92,12 @@ void loop() {
   Serial.println(left);
 
   if (left > 2350){ // 2060
+    rightMin = 100;
+    leftMin = 100;
     int startTime = millis();
     int time = millis();
     int duration = time - startTime;
-    while (duration < 175){
+    while (duration < 475){
       left = sonarLeft.ping();
       if (left == 0) {
         left = 2940;
@@ -100,14 +106,14 @@ void loop() {
       if (front == 0) {
         front = 2940;
       }
-      error = 529 - left;
-      P = error;
-      I = I + error;
-      D = error - lastError;
-      lastError = error;
-      motorspeed = P*Kp + I*Ki + D*Kd;
+      leftError = 470 - left;
+      P = leftError;
+      Ileft = Ileft + leftError;
+      Dleft = leftError - lastError;
+      lastError = leftError;
+      motorspeed = P*Kp*3 + Ileft*Ki + Dleft*Kd;
 
-      if (front < 353) {
+      if (front < 470) {
         motorspeed = motorspeed * 2;
       }
 
@@ -145,10 +151,12 @@ void loop() {
   }
 
   if (right > 2350){ // 2060
+    rightMin = 100;
+    leftMin = 100;
     int startTime = millis();
     int time = millis();
     int duration = time - startTime;
-    while (duration < 175){
+    while (duration < 475){
       right = sonarRight.ping();
       if (right == 0) {
         right = 2940;
@@ -157,14 +165,14 @@ void loop() {
       if (front == 0) {
         front = 2940;
       }
-      error = right - 529;
-      P = error;
-      I = I + error;
-      D = error - lastError;
-      lastError = error;
-      motorspeed = P*Kp + I*Ki + D*Kd;
+      rightError = right - 470;
+      P = rightError;
+      Iright = Iright + rightError;
+      Dright = rightError - lastError;
+      lastError = rightError;
+      motorspeed = P*Kp*3 + Iright*Ki + Dright*Kd;
 
-      if (front < 353) {
+      if (front < 470) {
         motorspeed = motorspeed * 2;
       }
 
@@ -202,6 +210,8 @@ void loop() {
   }
 
   else{
+    rightMin = 140;
+    leftMin = 140;
     error = right - left;
 
     P = error;
