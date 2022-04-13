@@ -48,14 +48,12 @@ void setup()
   pinMode(rightControl1, OUTPUT);
   pinMode(rightControl2, OUTPUT);
 
-  Serial.begin(9600);
-
   delay(3000);
 }
 
 // void loop() {
-//   analogWrite(leftMotorVelocity, 130);
-//   analogWrite(rightMotorVelocity, 150);
+//   analogWrite(leftMotorVelocity, 242);
+//   analogWrite(rightMotorVelocity, 255);
 
 //   analogWrite(leftControl1, 0);
 //   analogWrite(leftControl2, 255);
@@ -84,43 +82,34 @@ void loop() {
     left = 2940;
   }
 
-  Serial.println("front");
-  Serial.println(front);
-  Serial.println("right");
-  Serial.println(right);
-  Serial.println("left");
-  Serial.println(left);
-
-  if (left > 2350){ // 2060
-    rightMin = 120;
-    leftMin = 120 * 0.85;
+  if (right > 1176){ // 2060
+    rightMin = 70;
+    leftMin = 70;
     int startTime = millis();
     int time = millis();
     int duration = time - startTime;
-    analogWrite(leftMotorVelocity, 0);
-    analogWrite(rightMotorVelocity, 0);
-    while (duration < 500){
-      left = sonarLeft.ping();
-      if (left == 0) {
-        left = 2940;
+    while (duration < 550){
+      right = sonarRight.ping();
+      if (right == 0) {
+        right = 2940;
       }
       front = sonarFront.ping();
       if (front == 0) {
         front = 2940;
       }
-      leftError = 470 - left;
-      P = leftError;
-      Ileft = Ileft + leftError;
-      Dleft = leftError - lastError;
-      lastError = leftError;
-      motorspeed = P*Kp*4 + Ileft*Ki + Dleft*Kd;
+      rightError = right - 470;
+      P = rightError;
+      Iright = Iright + rightError;
+      Dright = rightError - lastError;
+      lastError = rightError;
+      motorspeed = P*Kp;
 
       if (front < 470) {
         motorspeed = motorspeed * 2;
       }
 
-      speedRight = 255 - (motorspeed);
-      speedLeft = 255 + motorspeed;
+      speedRight = rightStandard - (motorspeed * 2);
+      speedLeft = leftStandard + (motorspeed * 0.96);
       if (speedRight > rightMax)
       {
         speedRight = rightMax;
@@ -152,36 +141,34 @@ void loop() {
     }
   }
 
-  if (right > 2350){ // 2060
-    rightMin = 120;
-    leftMin = 120 * 0.85;
+  if (left > 1176){ // 200
+    rightMin = 70;
+    leftMin = 70;
     int startTime = millis();
     int time = millis();
     int duration = time - startTime;
-    analogWrite(leftMotorVelocity, 0);
-    analogWrite(rightMotorVelocity, 0);
-    while (duration < 500){
-      right = sonarRight.ping();
-      if (right == 0) {
-        right = 2940;
+    while (duration < 550){
+      left = sonarLeft.ping();
+      if (left == 0) {
+        left = 2940;
       }
       front = sonarFront.ping();
       if (front == 0) {
         front = 2940;
       }
-      rightError = right - 470;
-      P = rightError;
-      Iright = Iright + rightError;
-      Dright = rightError - lastError;
-      lastError = rightError;
-      motorspeed = P*Kp*4 + Iright*Ki + Dright*Kd;
+      leftError = 470 - left;
+      P = leftError;
+      Ileft = Ileft + leftError;
+      Dleft = leftError - lastError;
+      lastError = leftError;
+      motorspeed = P*Kp;
 
       if (front < 470) {
         motorspeed = motorspeed * 2;
       }
 
-      speedRight = 255 - (motorspeed);
-      speedLeft = 255 + motorspeed;
+      speedRight = rightStandard - (motorspeed);
+      speedLeft = leftStandard + (motorspeed * 0.96 * 2.4);
       if (speedRight > rightMax)
       {
         speedRight = rightMax;
@@ -225,7 +212,7 @@ void loop() {
     motorspeed = P*Kp + I*Ki + D*Kd;
   
     speedRight = rightStandard - (motorspeed);
-    speedLeft = leftStandard + motorspeed;
+    speedLeft = leftStandard + (motorspeed * 0.96);
     if (speedRight > rightMax)
     {
       speedRight = rightMax;
