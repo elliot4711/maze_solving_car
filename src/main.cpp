@@ -12,9 +12,9 @@ const int rightControl1 = 6;
 const int rightControl2 = 7;
 
 const int rightStandard = 255 * 0.85;
-const int leftStandard = 242 * 0.85; //0.785
+const int leftStandard = 255 * 0.85; //0.785
 const int rightMax = 255;
-const int leftMax = 242;
+const int leftMax = 255;
 int rightMin = 140;
 int leftMin = 140;
 
@@ -47,6 +47,7 @@ void setup()
   pinMode(leftControl2, OUTPUT);
   pinMode(rightControl1, OUTPUT);
   pinMode(rightControl2, OUTPUT);
+
   delay(3000);
 }
 
@@ -81,127 +82,131 @@ void loop() {
     left = 2940;
   }
 
-  if (right > 2059 || left > 2059){
-    if (right > 2059){ // 2060
-      rightMin = 70;
-      leftMin = 70;
-      int startTime = millis();
-      int time = millis();
-      int duration = time - startTime;
-      while (duration < 550){
-        right = sonarRight.ping();
-        if (right == 0) {
-          right = 2940;
-        }
-        front = sonarFront.ping();
-        if (front == 0) {
-          front = 2940;
-        }
-        rightError = right - 470;
-        P = rightError;
-        Iright = Iright + rightError;
-        Dright = rightError - lastError;
-        lastError = rightError;
-        motorspeed = P*Kp;
-
-        if (front < 470) {
-          motorspeed = motorspeed * 2;
-        }
-
-        speedRight = rightStandard - (motorspeed * 2);
-        speedLeft = leftStandard + (motorspeed * 0.96);
-        if (speedRight > rightMax)
-        {
-          speedRight = rightMax;
-        }
-        if (speedLeft > leftMax)
-        {
-          speedLeft = leftMax;
-        }
-        if (speedRight < rightMin)
-        {
-          speedRight = rightMin;
-        }
-        if (speedLeft < leftMin)
-        {
-          speedLeft = leftMin;
-        }
-
-        analogWrite(leftMotorVelocity, speedLeft);
-        analogWrite(rightMotorVelocity, speedRight);
-
-        analogWrite(leftControl1, 0);
-        analogWrite(leftControl2, 255);
-        analogWrite(rightControl1, 0);
-        analogWrite(rightControl2, 255);
-        
-        time = millis();
-        duration = time - startTime;
-        delay(30);
+  if (right > 2059){ // 2060
+    rightMin = 140;
+    leftMin = 140;
+    int startTime = millis();
+    int time = millis();
+    int duration = time - startTime;
+    while (right > 588){
+      right = sonarRight.ping();
+      if (right == 0) {
+        right = 2940;
       }
-    }
-
-
-    else { // 200
-      rightMin = 70;
-      leftMin = 70;
-      int startTime = millis();
-      int time = millis();
-      int duration = time - startTime;
-      while (duration < 550){
-        left = sonarLeft.ping();
-        if (left == 0) {
-          left = 2940;
-        }
-        front = sonarFront.ping();
-        if (front == 0) {
-          front = 2940;
-        }
-        leftError = 470 - left;
-        P = leftError;
-        Ileft = Ileft + leftError;
-        Dleft = leftError - lastError;
-        lastError = leftError;
-        motorspeed = P*Kp;
-
-        if (front < 470) {
-          motorspeed = motorspeed * 2;
-        }
-
-        speedRight = rightStandard - (motorspeed);
-        speedLeft = leftStandard + (motorspeed * 0.96 * 2.4);
-        if (speedRight > rightMax)
-        {
-          speedRight = rightMax;
-        }
-        if (speedLeft > leftMax)
-        {
-          speedLeft = leftMax;
-        }
-        if (speedRight < rightMin)
-        {
-          speedRight = rightMin;
-        }
-        if (speedLeft < leftMin)
-        {
-          speedLeft = leftMin;
-        }
-
-        analogWrite(leftMotorVelocity, speedLeft);
-        analogWrite(rightMotorVelocity, speedRight);
-
-        analogWrite(leftControl1, 0);
-        analogWrite(leftControl2, 255);
-        analogWrite(rightControl1, 0);
-        analogWrite(rightControl2, 255);
-        
-        time = millis();
-        duration = time - startTime;
-        delay(30);
+      front = sonarFront.ping();
+      if (front == 0) {
+        front = 2940;
       }
+      rightError = (right - 588)*2;
+      P = rightError;
+      Iright = Iright + rightError;
+      Dright = rightError - lastError;
+      lastError = rightError;
+      motorspeed = P*Kp;
+
+      speedRight = rightStandard - (motorspeed);
+      speedLeft = leftStandard + (motorspeed);
+      if (speedRight > rightMax)
+      {
+        speedRight = rightMax;
+      }
+      if (speedLeft > leftMax)
+      {
+        speedLeft = leftMax;
+      }
+      if (speedRight < rightMin)
+      {
+        speedRight = rightMin;
+      }
+      if (speedLeft < leftMin)
+      {
+        speedLeft = leftMin;
+      }
+
+      analogWrite(leftMotorVelocity, speedLeft);
+      analogWrite(rightMotorVelocity, speedRight);
+
+      analogWrite(leftControl1, 0);
+      analogWrite(leftControl2, 255);
+      analogWrite(rightControl1, 0);
+      analogWrite(rightControl2, 255);
+      
+      time = millis();
+      duration = time - startTime;
+      if (duration > 1000){
+        break;
+      }
+      if (front < 706) {
+        break;
+      }
+      delay(30);
     }
   }
 
+  else if (left > 2059){ // 200
+    rightMin = 140;
+    leftMin = 140;
+    int startTime = millis();
+    int time = millis();
+    int duration = time - startTime;
+    while (left > 588){
+      left = sonarLeft.ping();
+      if (left == 0) {
+        left = 2940;
+      }
+      front = sonarFront.ping();
+      if (front == 0) {
+        front = 2940;
+      }
+      leftError = (588 - left)*2;
+      P = leftError;
+      Ileft = Ileft + leftError;
+      Dleft = leftError - lastError;
+      lastError = leftError;
+      motorspeed = P*Kp;
+
+      if (front < 470) {
+        motorspeed = motorspeed * 2;
+      }
+
+      speedRight = rightStandard - (motorspeed);
+      speedLeft = leftStandard + (motorspeed);
+      if (speedRight > rightMax)
+      {
+        speedRight = rightMax;
+      }
+      if (speedLeft > leftMax)
+      {
+        speedLeft = leftMax;
+      }
+      if (speedRight < rightMin)
+      {
+        speedRight = rightMin;
+      }
+      if (speedLeft < leftMin)
+      {
+        speedLeft = leftMin;
+      }
+
+      analogWrite(leftMotorVelocity, speedLeft);
+      analogWrite(rightMotorVelocity, speedRight);
+
+      analogWrite(leftControl1, 0);
+      analogWrite(leftControl2, 255);
+      analogWrite(rightControl1, 0);
+      analogWrite(rightControl2, 255);
+      
+      time = millis();
+      duration = time - startTime;
+      if (duration > 1000){
+        break;
+      }
+      if (front < 706) {
+        break;
+      }
+      delay(30);
+    }
+  }
 
   else{
     rightMin = 140;
@@ -215,7 +220,7 @@ void loop() {
     motorspeed = P*Kp + I*Ki + D*Kd;
   
     speedRight = rightStandard - (motorspeed);
-    speedLeft = leftStandard + (motorspeed * 0.96);
+    speedLeft = leftStandard + (motorspeed);
     if (speedRight > rightMax)
     {
       speedRight = rightMax;
