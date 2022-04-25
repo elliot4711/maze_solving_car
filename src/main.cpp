@@ -82,13 +82,12 @@ void loop() {
     left = 2940;
   }
 
-  if (right > 2059){ // 2060
-    rightMin = 140;
-    leftMin = 140;
+  if (right > 2059){
     int startTime = millis();
     int time = millis();
     int duration = time - startTime;
-    while (right > 588){
+    
+    while (right > 706){
       right = sonarRight.ping();
       if (right == 0) {
         right = 2940;
@@ -97,15 +96,15 @@ void loop() {
       if (front == 0) {
         front = 2940;
       }
-      rightError = (right - 588)*2;
+      rightError = (right - 706)*2;
+      
       P = rightError;
-      Iright = Iright + rightError;
-      Dright = rightError - lastError;
-      lastError = rightError;
+
       motorspeed = P*Kp;
 
       speedRight = rightStandard - (motorspeed);
       speedLeft = leftStandard + (motorspeed);
+      
       if (speedRight > rightMax)
       {
         speedRight = rightMax;
@@ -136,19 +135,18 @@ void loop() {
       if (duration > 1000){
         break;
       }
-      if (front < 706) {
+      if (front < 941) {
         break;
       }
       delay(30);
     }
   }
 
-  else if (left > 2059){ // 200
-    rightMin = 140;
-    leftMin = 140;
+  else if (left > 2059){
     int startTime = millis();
     int time = millis();
     int duration = time - startTime;
+    
     while (left > 588){
       left = sonarLeft.ping();
       if (left == 0) {
@@ -158,19 +156,15 @@ void loop() {
       if (front == 0) {
         front = 2940;
       }
+      
       leftError = (588 - left)*2;
       P = leftError;
-      Ileft = Ileft + leftError;
-      Dleft = leftError - lastError;
-      lastError = leftError;
+      
       motorspeed = P*Kp;
-
-      if (front < 470) {
-        motorspeed = motorspeed * 2;
-      }
 
       speedRight = rightStandard - (motorspeed);
       speedLeft = leftStandard + (motorspeed);
+      
       if (speedRight > rightMax)
       {
         speedRight = rightMax;
@@ -201,7 +195,7 @@ void loop() {
       if (duration > 1000){
         break;
       }
-      if (front < 706) {
+      if (front < 941) {
         break;
       }
       delay(30);
@@ -209,18 +203,18 @@ void loop() {
   }
 
   else{
-    rightMin = 140;
-    leftMin = 140;
     error = right - left;
 
     P = error;
     I = I + error;
     D = error - lastError;
     lastError = error;
+    
     motorspeed = P*Kp + I*Ki + D*Kd;
   
     speedRight = rightStandard - (motorspeed);
     speedLeft = leftStandard + (motorspeed);
+    
     if (speedRight > rightMax)
     {
       speedRight = rightMax;
