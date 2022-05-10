@@ -15,11 +15,10 @@ const int rightStandard = 255 * 0.85;
 const int leftStandard = 255 * 0.85; //0.785
 const int rightMax = 255;
 const int leftMax = 255;
-int rightMin = 140;
-int leftMin = 140;
+const int rightMin = 140;
+const int leftMin = 125;
 
 #define MAX_DISTANCE 50
-#define STOP_DISTANCE 21
 
 NewPing sonarLeft(13, 12, MAX_DISTANCE);
 NewPing sonarRight(3, 2, MAX_DISTANCE);
@@ -117,7 +116,7 @@ void loop() {
     analogWrite(rightControl1, 0);
     analogWrite(rightControl2, 255);
     
-    while (right > 824){
+    while (right > 706){
       right = sonarRight.ping();
       if (right == 0) {
         right = 2940;
@@ -165,6 +164,11 @@ void loop() {
       if (duration > 1000){
         break;
       }
+
+      if ((front < 1647) && (right < 824)) {
+        break;
+      }
+
       if (front < 941) {
         break;
       }
@@ -211,7 +215,7 @@ void loop() {
     analogWrite(rightControl1, 0);
     analogWrite(rightControl2, 255);
     
-    while (left > 824){
+    while (left > 706){
       left = sonarLeft.ping();
       if (left == 0) {
         left = 2940;
@@ -259,6 +263,11 @@ void loop() {
       if (duration > 1000){
         break;
       }
+
+      if ((front < 1647) && (left < 824)) {
+        break;
+      }
+
       if (front < 941) {
         break;
       }
@@ -275,6 +284,7 @@ void loop() {
     lastError = error;
     
     correction = P*Kp + I*Ki + D*Kd;
+
     long startTime = millis();
     if (abs(D) <= 30 && startTime > 8000){
       int standard = map(abs(D), 0, 30, 255, rightStandard);
