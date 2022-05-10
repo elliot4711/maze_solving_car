@@ -125,7 +125,14 @@ void loop() {
       if (front == 0) {
         front = 2940;
       }
+
+      left = sonarLeft.ping();
+      if (left == 0) {
+        left = 2940;
+      }
+
       rightError = (right - 588)*2;
+
       
       P = rightError;
 
@@ -169,6 +176,10 @@ void loop() {
         break;
       }
 
+      if ((front < 1647) && (left > 2059)) {
+        break;
+      }
+      
       if (front < 941) {
         break;
       }
