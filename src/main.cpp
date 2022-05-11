@@ -17,6 +17,9 @@ const int rightMax = 255;
 const int leftMax = 255;
 const int rightMin = 140;
 const int leftMin = 120;
+int oldLeft = 0;
+int oldRight = 0;
+int oldFront = 0;
 
 #define MAX_DISTANCE 50
 
@@ -77,13 +80,47 @@ void loop() {
     left = 2940;
   }
 
+  if (abs(front-oldFront) < 7){
+    if (abs(left - oldLeft) < 7){
+      if (abs(right- oldRight) < 7){
+        int checkTime = millis();
+        if (checkTime > 8000){
+          analogWrite(leftMotorVelocity, 255);
+          analogWrite(rightMotorVelocity, 255);
+
+          analogWrite(leftControl1, 255);
+          analogWrite(leftControl2, 0);
+          analogWrite(rightControl1, 255);
+          analogWrite(rightControl2, 0);
+          delay(400);
+          analogWrite(leftControl1, 0);
+          analogWrite(leftControl2, 255);
+          analogWrite(rightControl1, 0);
+          analogWrite(rightControl2, 255);
+
+          if (right > left){
+            analogWrite(leftMotorVelocity, 255);
+            analogWrite(rightMotorVelocity, 100);
+            delay(400);
+
+          }
+          else{
+            analogWrite(leftMotorVelocity, 100);
+            analogWrite(rightMotorVelocity, 255);
+            delay(400);
+          }
+        }
+      }
+    }
+  }
+
   if (right > 2059){
-    int startTime = millis();
-    int time = millis();
-    int duration = time - startTime;
+    long startTime = millis();
+    long time = millis();
+    long duration = time - startTime;
     analogWrite(leftMotorVelocity, 255);
     analogWrite(rightMotorVelocity, 100);
-    delay(50);
+    delay(70);
     
     rightError = (right - 647)*2;
       
@@ -175,34 +212,27 @@ void loop() {
         break;
       }
 
-      if ((front < 1647) && (right < 824)) {
-        break;
-      }
-
       if ((left < 824) && (right < 824)){
         break;
       }
 
       if ((front < 1764) && (left > 2059)) {
-        if (right < 824) {
+        if (right < 941) {
           break;
         }
       }
       
-      if (front < 941) {
-        break;
-      }
-      delay(30);
+      delay(70);
     }
   }
 
   else if (left > 2059){
-    int startTime = millis();
-    int time = millis();
-    int duration = time - startTime;
+    long startTime = millis();
+    long time = millis();
+    long duration = time - startTime;
     analogWrite(leftMotorVelocity, 100);
     analogWrite(rightMotorVelocity, 255);
-    delay(50);
+    delay(70);
 
     leftError = (647 - left)*2;
     
@@ -239,13 +269,18 @@ void loop() {
     analogWrite(rightControl2, 255);
     
     while (left > 706){
-      left = sonarLeft.ping();
-      if (left == 0) {
-        left = 2940;
+      right = sonarRight.ping();
+      if (right == 0) {
+        right = 2940;
       }
       front = sonarFront.ping();
       if (front == 0) {
         front = 2940;
+      }
+
+      left = sonarLeft.ping();
+      if (left == 0) {
+        left = 2940;
       }
       
       leftError = (647 - left)*2;
@@ -287,24 +322,17 @@ void loop() {
         break;
       }
 
-      if ((front < 1647) && (left < 824)) {
-        break;
-      }
-
       if ((left < 824) && (right < 824)){
         break;
       }
 
       if ((front < 1764) && (right > 2059)) {
-        if (left < 824) {
+        if (left < 941) {
           break;
         }
       }
 
-      if (front < 941) {
-        break;
-      }
-      delay(30);
+      delay(70);
     }
   }
 
@@ -356,4 +384,7 @@ void loop() {
     
     delay(30);
   }
+  oldLeft = left;
+  oldRight = right;
+  oldFront = front;
 }
