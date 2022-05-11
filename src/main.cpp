@@ -16,7 +16,7 @@ const int leftStandard = 255 * 0.85; //0.785
 const int rightMax = 255;
 const int leftMax = 255;
 const int rightMin = 140;
-const int leftMin = 125;
+const int leftMin = 120;
 
 #define MAX_DISTANCE 50
 
@@ -81,8 +81,11 @@ void loop() {
     int startTime = millis();
     int time = millis();
     int duration = time - startTime;
+    analogWrite(leftMotorVelocity, 255);
+    analogWrite(rightMotorVelocity, 100);
+    delay(50);
     
-    rightError = (right - 588)*2;
+    rightError = (right - 647)*2;
       
     P = rightError;
 
@@ -131,7 +134,7 @@ void loop() {
         left = 2940;
       }
 
-      rightError = (right - 588)*2;
+      rightError = (right - 647)*2;
 
       
       P = rightError;
@@ -176,8 +179,14 @@ void loop() {
         break;
       }
 
-      if ((front < 1647) && (left > 2059)) {
+      if ((left < 824) && (right < 824)){
         break;
+      }
+
+      if ((front < 1764) && (left > 2059)) {
+        if (right < 824) {
+          break;
+        }
       }
       
       if (front < 941) {
@@ -191,8 +200,11 @@ void loop() {
     int startTime = millis();
     int time = millis();
     int duration = time - startTime;
+    analogWrite(leftMotorVelocity, 100);
+    analogWrite(rightMotorVelocity, 255);
+    delay(50);
 
-    leftError = (588 - left)*2;
+    leftError = (647 - left)*2;
     
     P = leftError;
     
@@ -236,7 +248,7 @@ void loop() {
         front = 2940;
       }
       
-      leftError = (588 - left)*2;
+      leftError = (647 - left)*2;
       P = leftError;
       
       correction = P*Kp;
@@ -277,6 +289,16 @@ void loop() {
 
       if ((front < 1647) && (left < 824)) {
         break;
+      }
+
+      if ((left < 824) && (right < 824)){
+        break;
+      }
+
+      if ((front < 1764) && (right > 2059)) {
+        if (left < 824) {
+          break;
+        }
       }
 
       if (front < 941) {
