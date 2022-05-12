@@ -89,9 +89,9 @@ void loop() {
     long duration = time - startTime;
     analogWrite(leftMotorVelocity, 255);
     analogWrite(rightMotorVelocity, 100);
-    delay(70);
+    delay(50);
     
-    while (right > 1059 || left > 1059){
+    while (right > 1176 || left > 1176){
       right = sonarRight.ping();
       if (right == 0) {
         right = 2940;
@@ -121,7 +121,7 @@ void loop() {
                     analogWrite(rightControl1, 255);
                     analogWrite(rightControl2, 0);
                     
-                    delay(400);
+                    delay(500);
 
                     analogWrite(leftControl1, 0);
                     analogWrite(leftControl2, 255);
@@ -131,14 +131,21 @@ void loop() {
                     if (right > left){
                       analogWrite(leftMotorVelocity, 255);
                       analogWrite(rightMotorVelocity, 100);
-                      delay(400);
+                      delay(500);
 
                     }
                     else{
                       analogWrite(leftMotorVelocity, 100);
                       analogWrite(rightMotorVelocity, 255);
-                      delay(400);
+                      delay(500);
                     }
+
+                    old1Left = 0;
+                    old1Right = 0;
+                    old1Front = 0;
+                    old2Front = 0;
+                    old2Left = 0;
+                    old2Right = 0;
 
                     break;
                   }
@@ -205,9 +212,9 @@ void loop() {
     long duration = time - startTime;
     analogWrite(leftMotorVelocity, 100);
     analogWrite(rightMotorVelocity, 255);
-    delay(70);
+    delay(50);
 
-    while (right > 1059 || left > 1059){
+    while (right > 1176 || left > 1176){
       right = sonarRight.ping();
       if (right == 0) {
         right = 2940;
@@ -237,7 +244,7 @@ void loop() {
                     analogWrite(rightControl1, 255);
                     analogWrite(rightControl2, 0);
                     
-                    delay(400);
+                    delay(500);
 
                     analogWrite(leftControl1, 0);
                     analogWrite(leftControl2, 255);
@@ -247,14 +254,21 @@ void loop() {
                     if (right > left){
                       analogWrite(leftMotorVelocity, 255);
                       analogWrite(rightMotorVelocity, 100);
-                      delay(400);
+                      delay(500);
 
                     }
                     else{
                       analogWrite(leftMotorVelocity, 100);
                       analogWrite(rightMotorVelocity, 255);
-                      delay(400);
+                      delay(500);           
                     }
+
+                    old1Left = 0;
+                    old1Right = 0;
+                    old1Front = 0;
+                    old2Front = 0;
+                    old2Left = 0;
+                    old2Right = 0;
 
                     break;
                   }
@@ -333,7 +347,7 @@ void loop() {
                   analogWrite(rightControl1, 255);
                   analogWrite(rightControl2, 0);
                   
-                  delay(400);
+                  delay(500);
 
                   analogWrite(leftControl1, 0);
                   analogWrite(leftControl2, 255);
@@ -343,14 +357,21 @@ void loop() {
                   if (right > left){
                     analogWrite(leftMotorVelocity, 255);
                     analogWrite(rightMotorVelocity, 100);
-                    delay(400);
+                    delay(500);
 
                   }
                   else{
                     analogWrite(leftMotorVelocity, 100);
                     analogWrite(rightMotorVelocity, 255);
-                    delay(400);
+                    delay(500);
                   }
+
+                  old1Left = 0;
+                  old1Right = 0;
+                  old1Front = 0;
+                  old2Front = 0;
+                  old2Left = 0;
+                  old2Right = 0;
                 }
               }
             }
