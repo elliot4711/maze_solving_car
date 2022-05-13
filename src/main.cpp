@@ -90,7 +90,7 @@ void loop() {
     long duration = time - startTime;
     analogWrite(leftMotorVelocity, 255);
     analogWrite(rightMotorVelocity, 100);
-    delay(50);
+    delay(10);
     
     while (right > 1059 || left > 1059){
       delay(20);
@@ -215,7 +215,7 @@ void loop() {
     long duration = time - startTime;
     analogWrite(leftMotorVelocity, 90);
     analogWrite(rightMotorVelocity, 255);
-    delay(50);
+    delay(10);
 
     while (right > 1059 || left > 1059){
       delay(20);
