@@ -23,6 +23,7 @@ int old1Front = 0;
 int old2Front = 0;
 int old2Left = 0;
 int old2Right = 0;
+int lastTime = 0;
 
 #define MAX_DISTANCE 50
 
@@ -91,7 +92,7 @@ void loop() {
     analogWrite(rightMotorVelocity, 100);
     delay(50);
     
-    while (right > 1176 || left > 1176){
+    while (right > 1058 || left > 1058){
       right = sonarRight.ping();
       if (right == 0) {
         right = 2940;
@@ -105,14 +106,14 @@ void loop() {
         left = 2940;
       }
 
-      if (abs(front-old1Front) < 7){
-        if (abs(left - old1Left) < 7){
-          if (abs(right- old1Right) < 7){
-            if (abs(old1Front - old2Front) < 7){
-              if (abs(old1Left - old2Left) < 7){
-                if (abs(old1Right - old2Right) < 7){
+      if (abs(front-old1Front) < 3){
+        if (abs(left - old1Left) < 3){
+          if (abs(right- old1Right) < 3){
+            if (abs(old1Front - old2Front) < 3){
+              if (abs(old1Left - old2Left) < 3){
+                if (abs(old1Right - old2Right) < 3){
                   checkTime = millis();
-                  if (checkTime > 8000){
+                  if ((checkTime > 8000) && ((checkTime - lastTime) > 3000)){
                     analogWrite(leftMotorVelocity, 255);
                     analogWrite(rightMotorVelocity, 255);
 
@@ -128,7 +129,7 @@ void loop() {
                     analogWrite(rightControl1, 0);
                     analogWrite(rightControl2, 255);
 
-                    if (right > left){
+                    if (right > 1176){
                       analogWrite(leftMotorVelocity, 255);
                       analogWrite(rightMotorVelocity, 100);
                       delay(500);
@@ -146,6 +147,8 @@ void loop() {
                     old2Front = 0;
                     old2Left = 0;
                     old2Right = 0;
+
+                    lastTime = millis();
 
                     break;
                   }
@@ -202,7 +205,7 @@ void loop() {
       old2Right = old1Right;
       old2Front = old1Front;
 
-      delay(30);
+      delay(15);
     }
   }
 
@@ -210,11 +213,11 @@ void loop() {
     long startTime = millis();
     long time = millis();
     long duration = time - startTime;
-    analogWrite(leftMotorVelocity, 100);
+    analogWrite(leftMotorVelocity, 80);
     analogWrite(rightMotorVelocity, 255);
     delay(50);
 
-    while (right > 1176 || left > 1176){
+    while (right > 1058 || left > 1058){
       right = sonarRight.ping();
       if (right == 0) {
         right = 2940;
@@ -228,14 +231,14 @@ void loop() {
         left = 2940;
       }
 
-      if (abs(front-old1Front) < 7){
-        if (abs(left - old1Left) < 7){
-          if (abs(right- old1Right) < 7){
-            if (abs(old1Front - old2Front) < 7){
-              if (abs(old1Left - old2Left) < 7){
-                if (abs(old1Right - old2Right) < 7){
+      if (abs(front-old1Front) < 3){
+        if (abs(left - old1Left) < 3){
+          if (abs(right- old1Right) < 3){
+            if (abs(old1Front - old2Front) < 3){
+              if (abs(old1Left - old2Left) < 3){
+                if (abs(old1Right - old2Right) < 3){
                   checkTime = millis();
-                  if (checkTime > 8000){
+                  if ((checkTime > 8000) && ((checkTime - lastTime) > 3000)){
                     analogWrite(leftMotorVelocity, 255);
                     analogWrite(rightMotorVelocity, 255);
 
@@ -251,7 +254,7 @@ void loop() {
                     analogWrite(rightControl1, 0);
                     analogWrite(rightControl2, 255);
 
-                    if (right > left){
+                    if (right > 1176){
                       analogWrite(leftMotorVelocity, 255);
                       analogWrite(rightMotorVelocity, 100);
                       delay(500);
@@ -269,6 +272,8 @@ void loop() {
                     old2Front = 0;
                     old2Left = 0;
                     old2Right = 0;
+
+                    lastTime = millis();
 
                     break;
                   }
@@ -325,20 +330,20 @@ void loop() {
       old2Right = old1Right;
       old2Front = old1Front;
 
-      delay(30);
+      delay(15);
     }
   }
 
   else{
 
-    if (abs(front-old1Front) < 7){
-      if (abs(left - old1Left) < 7){
-        if (abs(right- old1Right) < 7){
-          if (abs(old1Front - old2Front) < 7){
-            if (abs(old1Left - old2Left) < 7){
-              if (abs(old1Right - old2Right) < 7){
+    if (abs(front-old1Front) < 3){
+      if (abs(left - old1Left) < 3){
+        if (abs(right- old1Right) < 3){
+          if (abs(old1Front - old2Front) < 3){
+            if (abs(old1Left - old2Left) < 3){
+              if (abs(old1Right - old2Right) < 3){
                 checkTime = millis();
-                if (checkTime > 8000){
+                if ((checkTime > 8000) && ((checkTime - lastTime) > 3000)){
                   analogWrite(leftMotorVelocity, 255);
                   analogWrite(rightMotorVelocity, 255);
 
@@ -354,7 +359,7 @@ void loop() {
                   analogWrite(rightControl1, 0);
                   analogWrite(rightControl2, 255);
 
-                  if (right > left){
+                  if (right > 1176){
                     analogWrite(leftMotorVelocity, 255);
                     analogWrite(rightMotorVelocity, 100);
                     delay(500);
@@ -372,6 +377,8 @@ void loop() {
                   old2Front = 0;
                   old2Left = 0;
                   old2Right = 0;
+
+                  lastTime = millis();
                 }
               }
             }
@@ -425,7 +432,7 @@ void loop() {
     analogWrite(rightControl1, 0);
     analogWrite(rightControl2, 255);
     
-    delay(30);
+    delay(15);
   }
   old1Left = left;
   old1Right = right;
