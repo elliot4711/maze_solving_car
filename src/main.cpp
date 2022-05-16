@@ -11,8 +11,8 @@ const int leftControl2 = 5;
 const int rightControl1 = 6;
 const int rightControl2 = 7;
 
-const int rightStandard = 255 * 0.85;
-const int leftStandard = 255 * 0.85; //0.785
+int rightStandard = 255 * 0.85;
+int leftStandard = 255 * 0.85; //0.785
 const int rightMax = 255;
 const int leftMax = 255;
 const int rightMin = 140;
@@ -88,11 +88,11 @@ void loop() {
     long startTime = millis();
     long time = millis();
     long duration = time - startTime;
-    analogWrite(leftMotorVelocity, 255);
-    analogWrite(rightMotorVelocity, 100);
-    delay(10);
+
+    rightStandard = 255 * 0.75;
+    leftStandard = 255 * 0.75;
     
-    while (right > 1059 || left > 1059){
+    while (right > 1000 || left > 1000){
       delay(20);
 
       right = sonarRight.ping();
@@ -213,11 +213,11 @@ void loop() {
     long startTime = millis();
     long time = millis();
     long duration = time - startTime;
-    analogWrite(leftMotorVelocity, 90);
-    analogWrite(rightMotorVelocity, 255);
-    delay(10);
 
-    while (right > 1059 || left > 1059){
+    rightStandard = 255 * 0.75;
+    leftStandard = 255 * 0.75;
+
+    while (right > 1000 || left > 1000){
       delay(20);
 
       right = sonarRight.ping();
@@ -385,6 +385,9 @@ void loop() {
         }
       }
     }
+
+    rightStandard = 255 * 0.85;
+    leftStandard = 255 * 0.85;
     
     error = right - left;
 
