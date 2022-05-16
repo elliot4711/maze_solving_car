@@ -16,7 +16,7 @@ int leftStandard = 255 * 0.85; //0.785
 const int rightMax = 255;
 const int leftMax = 255;
 const int rightMin = 140;
-const int leftMin = 120;
+const int leftMin = 130;
 int old1Left = 0;
 int old1Right = 0;
 int old1Front = 0;
@@ -24,6 +24,7 @@ int old2Front = 0;
 int old2Left = 0;
 int old2Right = 0;
 int lastTime = 0;
+bool foundWall;
 
 #define MAX_DISTANCE 50
 
@@ -95,6 +96,8 @@ void loop() {
     while (right > 1000 || left > 1000){
       delay(20);
 
+      foundWall = false;
+
       right = sonarRight.ping();
       if (right == 0) {
         right = 2940;
@@ -161,6 +164,10 @@ void loop() {
         }
       }
 
+      if (right < 823) {
+        foundWall = true;
+      }
+
       rightError = (right - 647)*2;
       P = rightError;
 
@@ -184,6 +191,11 @@ void loop() {
       if (speedLeft < leftMin)
       {
         speedLeft = leftMin;
+      }
+
+      if (right > 2059 && foundWall == true){
+        speedLeft = 160;
+        speedRight = 255;
       }
 
       analogWrite(leftMotorVelocity, speedLeft);
@@ -219,6 +231,7 @@ void loop() {
 
     while (right > 1000 || left > 1000){
       delay(20);
+      foundWall = false;
 
       right = sonarRight.ping();
       if (right == 0) {
@@ -285,7 +298,11 @@ void loop() {
           }
         }
       }
-      
+
+      if (left < 823) {
+        foundWall = true;
+      }
+
       leftError = (647 - left)*2;
       P = leftError;
       
@@ -309,6 +326,11 @@ void loop() {
       if (speedLeft < leftMin)
       {
         speedLeft = leftMin;
+      }
+
+      if (left > 2059 && foundWall == true){
+        speedLeft = 255;
+        speedRight = 160;
       }
 
       analogWrite(leftMotorVelocity, speedLeft);
