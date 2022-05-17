@@ -16,7 +16,7 @@ int leftStandard = 255 * 0.85; //0.785
 const int rightMax = 255;
 const int leftMax = 255;
 const int rightMin = 120;
-const int leftMin = 110;
+const int leftMin = 115;
 int old1Left = 0;
 int old1Right = 0;
 int old1Front = 0;
@@ -90,13 +90,12 @@ void loop() {
     long time = millis();
     long duration = time - startTime;
 
-    rightStandard = 255 * 0.6;
-    leftStandard = 255 * 0.6;
+    rightStandard = 255 * 0.65;
+    leftStandard = 255 * 0.65;
+    foundWall = false;
     
-    while (right > 1000 || left > 1000){
+    while (right > 1059 || left > 1059){
       delay(20);
-
-      foundWall = false;
 
       right = sonarRight.ping();
       if (right == 0) {
@@ -111,12 +110,12 @@ void loop() {
         left = 2940;
       }
 
-      if (abs(front-old1Front) < 2){
-        if (abs(left - old1Left) < 2){
-          if (abs(right- old1Right) < 2){
-            if (abs(old1Front - old2Front) < 2){
-              if (abs(old1Left - old2Left) < 2){
-                if (abs(old1Right - old2Right) < 2){
+      if (abs(front-old1Front) < 1){
+        if (abs(left - old1Left) < 1){
+          if (abs(right- old1Right) < 1){
+            if (abs(old1Front - old2Front) < 1){
+              if (abs(old1Left - old2Left) < 1){
+                if (abs(old1Right - old2Right) < 1){
                   checkTime = millis();
                   if ((checkTime > 8000) && ((checkTime - lastTime) > 3000)){
                     analogWrite(leftMotorVelocity, 255);
@@ -164,7 +163,7 @@ void loop() {
         }
       }
 
-      if (right < 823) {
+      if (right < 941) {
         foundWall = true;
       }
 
@@ -226,12 +225,13 @@ void loop() {
     long time = millis();
     long duration = time - startTime;
 
-    rightStandard = 255 * 0.6;
-    leftStandard = 255 * 0.6;
+    rightStandard = 255 * 0.65;
+    leftStandard = 255 * 0.65;
 
-    while (right > 1000 || left > 1000){
+    foundWall = false;
+
+    while (right > 1059 || left > 1059){
       delay(20);
-      foundWall = false;
 
       right = sonarRight.ping();
       if (right == 0) {
@@ -246,12 +246,12 @@ void loop() {
         left = 2940;
       }
 
-      if (abs(front-old1Front) < 2){
-        if (abs(left - old1Left) < 2){
-          if (abs(right- old1Right) < 2){
-            if (abs(old1Front - old2Front) < 2){
-              if (abs(old1Left - old2Left) < 2){
-                if (abs(old1Right - old2Right) < 2){
+      if (abs(front-old1Front) < 1){
+        if (abs(left - old1Left) < 1){
+          if (abs(right- old1Right) < 1){
+            if (abs(old1Front - old2Front) < 1){
+              if (abs(old1Left - old2Left) < 1){
+                if (abs(old1Right - old2Right) < 1){
                   checkTime = millis();
                   if ((checkTime > 8000) && ((checkTime - lastTime) > 3000)){
                     analogWrite(leftMotorVelocity, 255);
@@ -299,7 +299,7 @@ void loop() {
         }
       }
 
-      if (left < 823) {
+      if (left < 941) {
         foundWall = true;
       }
 
@@ -357,12 +357,12 @@ void loop() {
   }
 
   else{
-    if (abs(front-old1Front) < 2){
-      if (abs(left - old1Left) < 2){
-        if (abs(right- old1Right) < 2){
-          if (abs(old1Front - old2Front) < 2){
-            if (abs(old1Left - old2Left) < 2){
-              if (abs(old1Right - old2Right) < 2){
+    if (abs(front-old1Front) < 1){
+      if (abs(left - old1Left) < 1){
+        if (abs(right- old1Right) < 1){
+          if (abs(old1Front - old2Front) < 1){
+            if (abs(old1Left - old2Left) < 1){
+              if (abs(old1Right - old2Right) < 1){
                 checkTime = millis();
                 if ((checkTime > 8000) && ((checkTime - lastTime) > 3000)){
                   analogWrite(leftMotorVelocity, 255);
