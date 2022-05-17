@@ -15,8 +15,8 @@ int rightStandard = 255 * 0.85;
 int leftStandard = 255 * 0.85; //0.785
 const int rightMax = 255;
 const int leftMax = 255;
-const int rightMin = 140;
-const int leftMin = 130;
+const int rightMin = 120;
+const int leftMin = 110;
 int old1Left = 0;
 int old1Right = 0;
 int old1Front = 0;
@@ -90,8 +90,8 @@ void loop() {
     long time = millis();
     long duration = time - startTime;
 
-    rightStandard = 255 * 0.75;
-    leftStandard = 255 * 0.75;
+    rightStandard = 255 * 0.6;
+    leftStandard = 255 * 0.6;
     
     while (right > 1000 || left > 1000){
       delay(20);
@@ -111,12 +111,12 @@ void loop() {
         left = 2940;
       }
 
-      if (abs(front-old1Front) < 3){
-        if (abs(left - old1Left) < 3){
-          if (abs(right- old1Right) < 3){
-            if (abs(old1Front - old2Front) < 3){
-              if (abs(old1Left - old2Left) < 3){
-                if (abs(old1Right - old2Right) < 3){
+      if (abs(front-old1Front) < 2){
+        if (abs(left - old1Left) < 2){
+          if (abs(right- old1Right) < 2){
+            if (abs(old1Front - old2Front) < 2){
+              if (abs(old1Left - old2Left) < 2){
+                if (abs(old1Right - old2Right) < 2){
                   checkTime = millis();
                   if ((checkTime > 8000) && ((checkTime - lastTime) > 3000)){
                     analogWrite(leftMotorVelocity, 255);
@@ -194,7 +194,7 @@ void loop() {
       }
 
       if (right > 2059 && foundWall == true){
-        speedLeft = 160;
+        speedLeft = 120;
         speedRight = 255;
       }
 
@@ -226,8 +226,8 @@ void loop() {
     long time = millis();
     long duration = time - startTime;
 
-    rightStandard = 255 * 0.75;
-    leftStandard = 255 * 0.75;
+    rightStandard = 255 * 0.6;
+    leftStandard = 255 * 0.6;
 
     while (right > 1000 || left > 1000){
       delay(20);
@@ -246,12 +246,12 @@ void loop() {
         left = 2940;
       }
 
-      if (abs(front-old1Front) < 3){
-        if (abs(left - old1Left) < 3){
-          if (abs(right- old1Right) < 3){
-            if (abs(old1Front - old2Front) < 3){
-              if (abs(old1Left - old2Left) < 3){
-                if (abs(old1Right - old2Right) < 3){
+      if (abs(front-old1Front) < 2){
+        if (abs(left - old1Left) < 2){
+          if (abs(right- old1Right) < 2){
+            if (abs(old1Front - old2Front) < 2){
+              if (abs(old1Left - old2Left) < 2){
+                if (abs(old1Right - old2Right) < 2){
                   checkTime = millis();
                   if ((checkTime > 8000) && ((checkTime - lastTime) > 3000)){
                     analogWrite(leftMotorVelocity, 255);
@@ -330,7 +330,7 @@ void loop() {
 
       if (left > 2059 && foundWall == true){
         speedLeft = 255;
-        speedRight = 160;
+        speedRight = 120;
       }
 
       analogWrite(leftMotorVelocity, speedLeft);
@@ -357,12 +357,12 @@ void loop() {
   }
 
   else{
-    if (abs(front-old1Front) < 3){
-      if (abs(left - old1Left) < 3){
-        if (abs(right- old1Right) < 3){
-          if (abs(old1Front - old2Front) < 3){
-            if (abs(old1Left - old2Left) < 3){
-              if (abs(old1Right - old2Right) < 3){
+    if (abs(front-old1Front) < 2){
+      if (abs(left - old1Left) < 2){
+        if (abs(right- old1Right) < 2){
+          if (abs(old1Front - old2Front) < 2){
+            if (abs(old1Left - old2Left) < 2){
+              if (abs(old1Right - old2Right) < 2){
                 checkTime = millis();
                 if ((checkTime > 8000) && ((checkTime - lastTime) > 3000)){
                   analogWrite(leftMotorVelocity, 255);
