@@ -92,8 +92,8 @@ void loop() {
     foundWall = false;
     int loops = 1;
 
-    rightStandard = 255 * 0.75;
-    leftStandard = 255 * 0.75;
+    rightStandard = 255 * 0.7;
+    leftStandard = 255 * 0.7;
     
     while (right > 1059 || left > 1059){
       if (loops > 1){
@@ -236,8 +236,8 @@ void loop() {
     foundWall = false;
     int loops = 1;
 
-    rightStandard = 255 * 0.75;
-    leftStandard = 255 * 0.75;
+    rightStandard = 255 * 0.7;
+    leftStandard = 255 * 0.7;
 
     while (right > 1059 || left > 1059){
       if (loops > 1){
